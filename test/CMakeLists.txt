@@ -6,5 +6,6 @@ add_executable(unitTests
 target_link_libraries(unitTests
         gtest
         gtest_main
+        pthread
         XMLTree
         XMLParser)
