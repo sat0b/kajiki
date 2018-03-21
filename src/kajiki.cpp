@@ -2,6 +2,6 @@
 #include "XMLParser.h"
 
 int main() {
-    XMLParser xmlParser;
-    XMLTree *root = xmlParser.parse("<foo>bar</foo>");
+    XMLParser xmlParser("<foo>bar</foo>");
+    XMLTree *root = xmlParser.parse();
 }
