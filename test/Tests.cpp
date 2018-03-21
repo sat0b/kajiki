@@ -2,13 +2,14 @@
 #include "../src/XMLParser.h"
 
 TEST(unitTests, test1) {
-    XMLParser xmlParser;
-    XMLTree *xmlTree = xmlParser.parse("<foo>bar</foo>");
-    EXPECT_EQ("foo", xmlTree->tag);
+    XMLParser xmlParser("<foo>bar</foo>");
+    XMLTree *xmlTree = xmlParser.parse();
+    EXPECT_EQ("foo", xmlTree->elements["foo"]->tag);
 }
 
 TEST(unitTests, test2) {
-    XMLParser xmlParser;
-    XMLTree *xmlTree = xmlParser.parse("<foo>bar</foo>");
-    EXPECT_EQ("bar", xmlTree->text);
+    XMLParser xmlParser("<foo>bar</foo>");
+    XMLTree *xmlTree = xmlParser.parse();
+    EXPECT_EQ("bar", xmlTree->elements["foo"]->text);
 }
+
