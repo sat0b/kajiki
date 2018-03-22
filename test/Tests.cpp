@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include "../src/XMLParser.h"
+#include "../src/XMLTree.h"
 
 TEST(unitTests, test1) {
     XMLParser xmlParser("<foo>bar</foo>");
