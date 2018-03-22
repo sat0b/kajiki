@@ -14,3 +14,8 @@ TEST(unitTests, test2) {
     EXPECT_EQ("bar", xmlTree->elements["foo"]->text);
 }
 
+TEST(unitTests, test3) {
+    XMLParser xmlParser("<foo><bar>baz</bar></foo>");
+    XMLTree *xmlTree = xmlParser.parse();
+    EXPECT_EQ("baz", xmlTree->elements["foo"]->elements["bar"]->text);
+}

@@ -17,7 +17,12 @@ XMLTree *XMLParser::parse() {
     expect_skip('>');
     if (tag != endTag)
         parse_error("Not found end tag, " + tag);
-    root->elements[tag] = new XMLTree(tag, text);
+    if (text.find('<') == std::string::npos) {
+        root->elements[tag] = new XMLTree(tag, text);
+    } else {
+        auto child = new XMLParser(text);
+        root->elements[tag] = child->parse();
+    }
     return root;
 }
 
