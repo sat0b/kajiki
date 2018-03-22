@@ -1,7 +1,7 @@
 #ifndef KAJIKI_XMLPARSER_H
 #define KAJIKI_XMLPARSER_H
 
-#include "XMLTree.h"
+class XMLTree;
 
 class XMLParser {
 public:

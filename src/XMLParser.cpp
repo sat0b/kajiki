@@ -1,5 +1,6 @@
 #include <iostream>
 #include "XMLParser.h"
+#include "XMLTree.h"
 
 XMLParser::XMLParser(std::string xml) :
         xml(xml), p(0) {}
