@@ -4,8 +4,8 @@ add_executable(unitTests
         Tests.cpp)
 
 target_link_libraries(unitTests
-        XMLTree
         XMLParser
+        XMLTree
         gtest
         gtest_main
         pthread)
