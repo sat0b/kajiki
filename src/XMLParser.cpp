@@ -27,8 +27,7 @@ char XMLParser::consume() {
 std::string XMLParser::consume_until(char c) {
     std::string res;
     while (xml[p] != c) {
-        res += xml[p];
-        ++p;
+        res += consume();
     }
     return res;
 }
