@@ -7,21 +7,25 @@ XMLParser::XMLParser(std::string xml) :
 
 XMLTree *XMLParser::parse() {
     auto root = new XMLTree;
-    expect_skip('<');
-    std::string tag = consume_until('>');
-    expect_skip('>');
-    std::string text = consume_until("</" + tag + ">");
-    expect_skip('<');
-    expect_skip('/');
-    std::string endTag = consume_until('>');
-    expect_skip('>');
-    if (tag != endTag)
-        parse_error("Not found end tag, " + tag);
-    if (text.find('<') == std::string::npos) {
-        root->elements[tag] = new XMLTree(tag, text);
-    } else {
-        auto child = new XMLParser(text);
-        root->elements[tag] = child->parse();
+    for (;;) {
+        expect_skip('<');
+        std::string tag = consume_until('>');
+        expect_skip('>');
+        std::string text = consume_until("</" + tag + ">");
+        expect_skip('<');
+        expect_skip('/');
+        std::string endTag = consume_until('>');
+        expect_skip('>');
+        if (tag != endTag)
+            parse_error("Not found end tag, " + tag);
+        if (text.find('<') == std::string::npos) {
+            root->elements[tag] = new XMLTree(tag, text);
+        } else {
+            auto child = new XMLParser(text);
+            root->elements[tag] = child->parse();
+        }
+        if (p == xml.length())
+            break;
     }
     return root;
 }
