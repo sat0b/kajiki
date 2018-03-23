@@ -11,6 +11,7 @@ public:
     std::string tag;
     std::string text;
     std::map<std::string, XMLTree *> elements;
+    std::map<std::string, std::string> attributes;
 };
 
 

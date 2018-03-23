@@ -26,3 +26,9 @@ TEST(unitTests, readNestedMultipleElement) {
     EXPECT_EQ("baz1", xmlTree->elements["foo"]->elements["bar1"]->text);
     EXPECT_EQ("baz2", xmlTree->elements["foo"]->elements["bar2"]->text);
 }
+
+TEST(unitTests, readAttribute) {
+    XMLParser xmlParser("<foo attr=\"baz\">bar</foo>");
+    XMLTree *xmlTree = xmlParser.parse();
+    EXPECT_EQ("baz", xmlTree->elements["foo"]->attributes["attr"]);
+}

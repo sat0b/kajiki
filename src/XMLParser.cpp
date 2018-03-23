@@ -8,10 +8,16 @@ XMLParser::XMLParser(std::string xml) :
 XMLTree *XMLParser::parse() {
     auto root = new XMLTree;
     for (;;) {
+        // read begin tag
         expect_skip('<');
-        std::string tag = consume_until('>');
+        std::string tag;
+        while (!(read() == ' ' || read() == '>'))
+            tag += consume();
+        // read attribute
+        std::map<std::string, std::string> attrs = parse_attribute();
         expect_skip('>');
         std::string text = consume_until("</" + tag + ">");
+        // read end tag
         expect_skip('<');
         expect_skip('/');
         std::string endTag = consume_until('>');
@@ -24,6 +30,8 @@ XMLTree *XMLParser::parse() {
             auto child = new XMLParser(text);
             root->elements[tag] = child->parse();
         }
+        for (auto attr : attrs)
+            root->elements[tag]->attributes[attr.first] = attr.second;
         if (p == xml.length())
             break;
     }
@@ -32,6 +40,10 @@ XMLTree *XMLParser::parse() {
 
 char XMLParser::consume() {
     return xml[p++];
+}
+
+char XMLParser::read() {
+    return xml[p];
 }
 
 std::string XMLParser::consume_until(char c) {
@@ -63,4 +75,39 @@ void XMLParser::expect_skip(char c) {
 void XMLParser::parse_error(std::string msg) {
     std::cerr << "Parse error " + msg << std::endl;
     std::exit(1);
+}
+
+void XMLParser::skip_space() {
+    while (p < xml.length()) {
+        if (xml[p] == ' ' || xml[p] == '\t' || xml[p] == '\n')
+            ++p;
+        else
+            break;
+    }
+}
+
+bool XMLParser::skip(char c) {
+    if (xml[p] != c)
+        return false;
+    ++p;
+    return true;
+}
+
+std::map<std::string, std::string> XMLParser::parse_attribute() {
+    std::map<std::string, std::string> attrs;
+    if (read() == ' ') {
+        while (read() != '>') {
+            skip_space();
+            std::string attrName = consume_until('=');
+            expect_skip('=');
+            std::string attrValue;
+            expect_skip('"');
+            while (read() != '"')
+                attrValue += consume();
+            expect_skip('"');
+            attrs[attrName] = attrValue;
+            skip_space();
+        }
+    }
+    return attrs;
 }
