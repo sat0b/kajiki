@@ -32,3 +32,10 @@ TEST(unitTests, readAttribute) {
     XMLTree *xmlTree = xmlParser.parse();
     EXPECT_EQ("baz", xmlTree->elements["foo"]->attributes["attr"]);
 }
+
+TEST(unitTests, readMultipleAttribute) {
+    XMLParser xmlParser("<foo attr=\"baz\"><bar attr1=\"a\" attr2=\"b\">baz</bar></foo>");
+    XMLTree *xmlTree = xmlParser.parse();
+    EXPECT_EQ("a", xmlTree->elements["foo"]->elements["bar"]->attributes["attr1"]);
+    EXPECT_EQ("b", xmlTree->elements["foo"]->elements["bar"]->attributes["attr2"]);
+}
