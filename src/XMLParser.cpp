@@ -7,7 +7,7 @@ XMLParser::XMLParser(std::string xml) :
 
 XMLTree *XMLParser::parse() {
     auto root = new XMLTree;
-    for (;;) {
+    while (p < xml.length()) {
         // read begin tag
         expect_skip('<');
         std::string tag;
@@ -32,8 +32,6 @@ XMLTree *XMLParser::parse() {
         }
         for (auto attr : attrs)
             root->elements[tag]->attributes[attr.first] = attr.second;
-        if (p == xml.length())
-            break;
     }
     return root;
 }
