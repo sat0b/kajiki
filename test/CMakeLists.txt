@@ -1,7 +1,7 @@
 project(unitTests)
 
 add_executable(unitTests
-        Tests.cpp)
+        XMLTest.cpp)
 
 target_link_libraries(unitTests
         XMLParser

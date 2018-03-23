@@ -1,13 +1,27 @@
 #include <iostream>
+#include <fstream>
 #include "XMLParser.h"
 #include "XMLTree.h"
+
+XMLParser::XMLParser() : p(0) {}
 
 XMLParser::XMLParser(std::string xml) :
         xml(xml), p(0) {}
 
+void XMLParser::open(std::string fileName) {
+    std::ifstream fin(fileName);
+    if (fin.fail())
+        parse_error("Not found " + fileName);
+    std::istreambuf_iterator<char> it(fin);
+    std::istreambuf_iterator<char> last;
+    std::string str(it, last);
+    xml = str;
+}
+
 XMLTree *XMLParser::parse() {
     auto root = new XMLTree;
     while (p < xml.length()) {
+        skip_space();
         // read begin tag
         expect_skip('<');
         std::string tag;
@@ -16,6 +30,7 @@ XMLTree *XMLParser::parse() {
         // read attribute
         std::map<std::string, std::string> attrs = parse_attribute();
         expect_skip('>');
+        skip_space();
         std::string text = consume_until("</" + tag + ">");
         // read end tag
         expect_skip('<');
@@ -32,6 +47,7 @@ XMLTree *XMLParser::parse() {
         }
         for (auto attr : attrs)
             root->elements[tag]->attributes[attr.first] = attr.second;
+        skip_space();
     }
     return root;
 }

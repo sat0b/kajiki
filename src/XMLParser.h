@@ -7,8 +7,10 @@ class XMLTree;
 
 class XMLParser {
 public:
+    XMLParser();
     XMLParser(std::string xml);
     XMLTree *parse();
+    void open(std::string fileName);
 
 private:
     size_t p;

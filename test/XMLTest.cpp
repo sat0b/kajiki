@@ -39,3 +39,11 @@ TEST(unitTests, readMultipleAttribute) {
     EXPECT_EQ("a", xmlTree->elements["foo"]->elements["bar"]->attributes["attr1"]);
     EXPECT_EQ("b", xmlTree->elements["foo"]->elements["bar"]->attributes["attr2"]);
 }
+
+TEST(unitTests, loadFile) {
+    XMLParser xmlParser;
+    xmlParser.open("../../test/xml/test.xml");
+    XMLTree *xmlTree = xmlParser.parse();
+    EXPECT_EQ("Title", xmlTree->elements["page"]->elements["title"]->text);
+    EXPECT_EQ("10", xmlTree->elements["page"]->elements["revision"]->elements["id"]->text);
+}
