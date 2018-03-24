@@ -25,10 +25,19 @@ XMLTree *XMLParser::parse() {
         // read begin tag
         expect_skip('<');
         std::string tag;
-        while (!(read() == ' ' || read() == '>'))
+        while (read() != ' ' && read() != '>' && read() != '/')
             tag += consume();
         // read attribute
         std::map<std::string, std::string> attrs = parse_attribute();
+        // end tag abbreviation
+        if (skip('/')) {
+            expect_skip('>');
+            root->elements[tag] = new XMLTree;
+            for (auto attr : attrs)
+                root->elements[tag]->attributes[attr.first] = attr.second;
+            skip_space();
+            continue;
+        }
         expect_skip('>');
         skip_space();
         std::string text = consume_until("</" + tag + ">");
@@ -114,7 +123,7 @@ bool XMLParser::skip(char c) {
 std::map<std::string, std::string> XMLParser::parse_attribute() {
     std::map<std::string, std::string> attrs;
     if (read() == ' ') {
-        while (read() != '>') {
+        while (read() != '>' && read() != '/') {
             skip_space();
             std::string attrName = consume_until('=');
             expect_skip('=');

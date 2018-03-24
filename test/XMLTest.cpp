@@ -47,3 +47,9 @@ TEST(unitTests, loadFile) {
     EXPECT_EQ("Title", xmlTree->elements["page"]->elements["title"]->text);
     EXPECT_EQ("10", xmlTree->elements["page"]->elements["revision"]->elements["id"]->text);
 }
+
+TEST(unitTests, readAbbr) {
+    XMLParser xmlParser("<text id=\"10\" bytes=\"150\" />");
+    XMLTree *xmlTree = xmlParser.parse();
+    EXPECT_EQ("10", xmlTree->elements["text"]->attributes["id"]);
+}
