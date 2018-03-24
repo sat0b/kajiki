@@ -42,7 +42,7 @@ TEST(unitTests, readMultipleAttribute) {
 
 TEST(unitTests, loadFile) {
     XMLParser xmlParser;
-    xmlParser.open("../../test/xml/test.xml");
+    xmlParser.open("test/xml/test.xml");
     XMLTree *xmlTree = xmlParser.parse();
     EXPECT_EQ("Title", xmlTree->elements["page"]->elements["title"]->text);
     EXPECT_EQ("10", xmlTree->elements["page"]->elements["revision"]->elements["id"]->text);

@@ -6,5 +6,6 @@ set(CMAKE_VERBOSE_MAKEFILE TRUE)
 
 add_subdirectory(src)
 add_subdirectory(test)
+
 enable_testing()
-add_test(NAME unitTests COMMAND unitTests)
+add_test(NAME xmlTest COMMAND xmlTest)
