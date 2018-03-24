@@ -21,6 +21,7 @@ private:
     void parse_error(std::string msg);
     char consume();
     char read();
+    void next();
     std::map<std::string, std::string> parse_attribute();
     std::string consume_until(char c);
     std::string consume_until(std::string str);

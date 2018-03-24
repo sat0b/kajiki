@@ -14,5 +14,4 @@ public:
     std::map<std::string, std::string> attributes;
 };
 
-
 #endif //KAJIKI_XMLTREE_H

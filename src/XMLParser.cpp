@@ -83,7 +83,7 @@ void XMLParser::expect_skip(char c) {
         msg += c + " expected : " + xml[p];
         parse_error(msg);
     }
-    ++p;
+    next();
 }
 
 void XMLParser::parse_error(std::string msg) {
@@ -94,16 +94,20 @@ void XMLParser::parse_error(std::string msg) {
 void XMLParser::skip_space() {
     while (p < xml.length()) {
         if (xml[p] == ' ' || xml[p] == '\t' || xml[p] == '\n')
-            ++p;
+            next();
         else
             break;
     }
 }
 
+void XMLParser::next() {
+    ++p;
+}
+
 bool XMLParser::skip(char c) {
     if (xml[p] != c)
         return false;
-    ++p;
+    next();
     return true;
 }
 
@@ -125,3 +129,4 @@ std::map<std::string, std::string> XMLParser::parse_attribute() {
     }
     return attrs;
 }
+
