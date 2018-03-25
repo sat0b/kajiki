@@ -3,6 +3,8 @@
 
 XmlTree::XmlTree(std::string tag, std::string text) : tag(tag), text(text) {}
 
+XmlTree::XmlTree(std::map<std::string, XmlTree *> elements) : elements(elements) {}
+
 std::ostream &operator<<(std::ostream &os, const XmlTree &xml_tree) {
     for (auto element : xml_tree.elements) {
         std::string tag_name = element.first;

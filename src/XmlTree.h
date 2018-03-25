@@ -7,6 +7,7 @@
 class XmlTree {
 public:
     XmlTree() = default;
+    explicit XmlTree(std::map<std::string, XmlTree *> elements);
     XmlTree(std::string tag, std::string text);
     std::string tag;
     std::string text;

@@ -19,7 +19,7 @@ void XmlParser::open(std::string file_name) {
 }
 
 XmlTree *XmlParser::parse() {
-    auto root = new XmlTree;
+    std::map<std::string, XmlTree *> elements;
     while (p < xml.length()) {
         skip_space();
         // read begin tag
@@ -32,9 +32,9 @@ XmlTree *XmlParser::parse() {
         // end tag abbreviation
         if (skip('/')) {
             expect_skip('>');
-            root->elements[tag] = new XmlTree;
+            elements[tag] = new XmlTree;
             for (auto attr : attrs)
-                root->elements[tag]->attributes[attr.first] = attr.second;
+                elements[tag]->attributes[attr.first] = attr.second;
             skip_space();
             continue;
         }
@@ -49,16 +49,16 @@ XmlTree *XmlParser::parse() {
         if (tag != endTag)
             parse_error("Not found end tag, " + tag);
         if (text.find('<') == std::string::npos) {
-            root->elements[tag] = new XmlTree(tag, text);
+            elements[tag] = new XmlTree(tag, text);
         } else {
             auto child = new XmlParser(text);
-            root->elements[tag] = child->parse();
+            elements[tag] = child->parse();
         }
         for (auto attr : attrs)
-            root->elements[tag]->attributes[attr.first] = attr.second;
+            elements[tag]->attributes[attr.first] = attr.second;
         skip_space();
     }
-    return root;
+    return new XmlTree(elements);
 }
 
 char XmlParser::consume() {
