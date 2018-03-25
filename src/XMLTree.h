@@ -14,4 +14,6 @@ public:
     std::map<std::string, std::string> attributes;
 };
 
+std::ostream &operator<<(std::ostream &os, const XMLTree &xmlTree);
+
 #endif //KAJIKI_XMLTREE_H

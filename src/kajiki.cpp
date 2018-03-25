@@ -1,5 +1,6 @@
 #include <iostream>
 #include "XMLParser.h"
+#include "XMLTree.h"
 
 int main(int argc, char **argv) {
     XMLParser xmlParser;
@@ -7,5 +8,6 @@ int main(int argc, char **argv) {
         std::string fileName = argv[1];
         xmlParser.open(fileName);
         XMLTree *root = xmlParser.parse();
+        std::cout << *root << std::endl;
     }
 }
