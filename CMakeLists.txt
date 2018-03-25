@@ -8,4 +8,4 @@ add_subdirectory(src)
 add_subdirectory(test)
 
 enable_testing()
-add_test(NAME xmlTest COMMAND xmlTest)
+add_test(NAME xml_test COMMAND xml_test)
