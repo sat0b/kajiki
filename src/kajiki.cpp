@@ -8,6 +8,5 @@ int main(int argc, char **argv) {
         std::string file_name = argv[1];
         xml_parser.open(file_name);
         XmlTree *root = xml_parser.parse();
-        std::cout << *root << std::endl;
     }
 }

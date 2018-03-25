@@ -9,3 +9,4 @@ add_subdirectory(test)
 
 enable_testing()
 add_test(NAME xml_test COMMAND xml_test)
+add_test(NAME tokenizer_test COMMAND tokenizer_test)
