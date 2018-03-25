@@ -41,7 +41,7 @@ TEST(xml_tests, read_attribute) {
 }
 
 TEST(xml_tests, read_multiple_attribute) {
-    XmlParser xml_parser("<foo attr=\"baz\"><bar attr1=\"a\" attr2=\"b\">baz</bar></foo>");
+    XmlParser xml_parser(R"(<foo attr="baz"><bar attr1="a" attr2="b">baz</bar></foo>)");
     XmlTree *xml_tree = xml_parser.parse();
     EXPECT_EQ("a", xml_tree->find("foo")->find("bar")->attributes["attr1"]);
     EXPECT_EQ("b", xml_tree->find("foo")->find("bar")->attributes["attr2"]);
@@ -56,7 +56,7 @@ TEST(xml_tests, load_file) {
 }
 
 TEST(xml_tests, read_abbr) {
-    XmlParser xml_parser("<text id=\"10\" bytes=\"150\" />");
+    XmlParser xml_parser(R"(<text id="10" bytes="150" />)");
     XmlTree *xml_tree = xml_parser.parse();
     EXPECT_EQ("10", xml_tree->find("text")->attributes["id"]);
 }
