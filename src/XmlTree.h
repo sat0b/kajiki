@@ -3,15 +3,18 @@
 
 #include <string>
 #include <map>
+#include <vector>
 
 class XmlTree {
 public:
     XmlTree() = default;
-    explicit XmlTree(std::map<std::string, XmlTree *> elements);
+    explicit XmlTree(std::multimap<std::string, XmlTree *> elements);
     XmlTree(std::string tag, std::string text);
+    std::vector<XmlTree *> find_all(std::string key);
+    XmlTree *find(std::string key);
     std::string tag;
     std::string text;
-    std::map<std::string, XmlTree *> elements;
+    std::multimap<std::string, XmlTree *> elements;
     std::map<std::string, std::string> attributes;
 };
 

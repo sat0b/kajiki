@@ -19,7 +19,7 @@ void XmlParser::open(std::string file_name) {
 }
 
 XmlTree *XmlParser::parse() {
-    std::map<std::string, XmlTree *> elements;
+    std::multimap<std::string, XmlTree *> elements;
     while (p < xml.length()) {
         skip_space();
         // read begin tag
@@ -32,9 +32,11 @@ XmlTree *XmlParser::parse() {
         // end tag abbreviation
         if (skip('/')) {
             expect_skip('>');
-            elements[tag] = new XmlTree;
+            auto child = new XmlTree;
             for (auto attr : attrs)
-                elements[tag]->attributes[attr.first] = attr.second;
+                child->attributes[attr.first] = attr.second;
+            auto element = std::make_pair(tag, child);
+            elements.insert(element);
             skip_space();
             continue;
         }
@@ -48,14 +50,17 @@ XmlTree *XmlParser::parse() {
         expect_skip('>');
         if (tag != endTag)
             parse_error("Not found end tag, " + tag);
+        XmlTree *child;
         if (text.find('<') == std::string::npos) {
-            elements[tag] = new XmlTree(tag, text);
+            child = new XmlTree(tag, text);
         } else {
-            auto child = new XmlParser(text);
-            elements[tag] = child->parse();
+            auto child_parser = new XmlParser(text);
+            child = child_parser->parse();
         }
         for (auto attr : attrs)
-            elements[tag]->attributes[attr.first] = attr.second;
+            child->attributes[attr.first] = attr.second;
+        auto element = std::make_pair(tag, child);
+        elements.insert(element);
         skip_space();
     }
     return new XmlTree(elements);

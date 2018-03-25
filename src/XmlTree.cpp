@@ -3,7 +3,26 @@
 
 XmlTree::XmlTree(std::string tag, std::string text) : tag(tag), text(text) {}
 
-XmlTree::XmlTree(std::map<std::string, XmlTree *> elements) : elements(elements) {}
+XmlTree::XmlTree(std::multimap<std::string, XmlTree *> elements) : elements(elements) {}
+
+std::vector<XmlTree *> XmlTree::find_all(std::string key) {
+    auto itr = elements.find(key);
+    std::vector<XmlTree *> xml_vec;
+    while (itr != elements.end()) {
+        xml_vec.push_back(itr->second);
+        ++itr;
+    }
+    return xml_vec;
+}
+
+XmlTree *XmlTree::find(std::string key) {
+    auto itr = elements.find(key);
+    std::vector<XmlTree *> xml_vec;
+    if (itr == elements.end())
+        return nullptr;
+    else
+        return itr->second;
+}
 
 std::ostream &operator<<(std::ostream &os, const XmlTree &xml_tree) {
     for (auto element : xml_tree.elements) {
