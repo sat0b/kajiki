@@ -25,6 +25,7 @@ private:
     std::map<std::string, std::string> parse_attribute();
     std::string consume_until(char c);
     std::string consume_until(std::string str);
+    std::vector<XmlTree *> parse_elements(std::string text);
 };
 
 #endif //KAJIKI_XMLPARSER_H

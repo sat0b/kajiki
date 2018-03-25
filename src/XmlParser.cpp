@@ -19,46 +19,33 @@ void XmlParser::open(std::string file_name) {
 }
 
 XmlTree *XmlParser::parse() {
-    std::map<std::string, XmlTree *> elements;
-    while (p < xml.length()) {
-        skip_space();
-        // read begin tag
-        expect_skip('<');
-        std::string tag;
-        while (read() != ' ' && read() != '>' && read() != '/')
-            tag += consume();
-        // read attribute
-        std::map<std::string, std::string> attrs = parse_attribute();
-        // end tag abbreviation
-        if (skip('/')) {
-            expect_skip('>');
-            elements[tag] = new XmlTree;
-            for (auto attr : attrs)
-                elements[tag]->attributes[attr.first] = attr.second;
-            skip_space();
-            continue;
-        }
+    std::string tag;
+    std::map<std::string, std::string> attributes;
+    std::vector<XmlTree *> elements;
+    std::string text;
+
+    // read begin tag
+    expect_skip('<');
+    while (read() != ' ' && read() != '>' && read() != '/')
+        tag += consume();
+    // read attribute
+    attributes = parse_attribute();
+    // end tag abbreviation
+    if (skip('/')) {
         expect_skip('>');
-        skip_space();
-        std::string text = consume_until("</" + tag + ">");
-        // read end tag
-        expect_skip('<');
-        expect_skip('/');
-        std::string endTag = consume_until('>');
-        expect_skip('>');
-        if (tag != endTag)
-            parse_error("Not found end tag, " + tag);
-        if (text.find('<') == std::string::npos) {
-            elements[tag] = new XmlTree(tag, text);
-        } else {
-            auto child = new XmlParser(text);
-            elements[tag] = child->parse();
-        }
-        for (auto attr : attrs)
-            elements[tag]->attributes[attr.first] = attr.second;
-        skip_space();
+        return new XmlTree(tag, attributes, elements, text);
     }
-    return new XmlTree(elements);
+    expect_skip('>');
+    skip_space();
+    text = consume_until("</" + tag + ">");
+    // read end tag
+    expect_skip('<');
+    expect_skip('/');
+    std::string end_tag = consume_until('>');
+    expect_skip('>');
+
+    elements = parse_elements(text);
+    return new XmlTree(tag, attributes, elements, text);
 }
 
 char XmlParser::consume() {
@@ -137,5 +124,51 @@ std::map<std::string, std::string> XmlParser::parse_attribute() {
         }
     }
     return attrs;
+}
+
+std::vector<XmlTree *> XmlParser::parse_elements(std::string text) {
+    std::vector<XmlTree *> elements;
+    if (text.find('<') == std::string::npos)
+        return elements;
+
+    auto p = text.begin();
+    while (p != text.end()) {
+        // skip space
+        while (*p == ' ' || *p == '\t' || *p == '\n')
+            ++p;
+        auto begin_p = p;
+        if (*p != '<')
+            parse_error("<");
+        // read <
+        ++p;
+        std::string begin_tag;
+        while (*p != '>' && *p != ' ') {
+            begin_tag += *p;
+            ++p;
+        }
+        // skip attribute
+        if (*p == ' ') {
+            while (*p != '>')
+                ++p;
+        }
+        // read >
+        ++p;
+        // read end tag
+        std::string rem_str = std::string(p, text.end());
+        std::string end_tag = "</" + begin_tag + ">";
+        size_t pos = rem_str.find(end_tag);
+        if (pos == std::string::npos)
+            parse_error("Not found " + end_tag + " in " + rem_str);
+        p += pos + end_tag.length();
+        // parse a element
+        std::string sub_xml(begin_p, p);
+        XmlParser xml_parser(sub_xml);
+        XmlTree *element = xml_parser.parse();
+        elements.push_back(element);
+        // skip space
+        while (*p == ' ' || *p == '\t' || *p == '\n')
+            ++p;
+    }
+    return elements;
 }
 
