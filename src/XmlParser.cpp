@@ -1,14 +1,14 @@
 #include <iostream>
 #include <fstream>
-#include "XMLParser.h"
-#include "XMLTree.h"
+#include "XmlParser.h"
+#include "XmlTree.h"
 
-XMLParser::XMLParser() : p(0) {}
+XmlParser::XmlParser() : p(0) {}
 
-XMLParser::XMLParser(std::string xml) :
+XmlParser::XmlParser(std::string xml) :
         xml(xml), p(0) {}
 
-void XMLParser::open(std::string file_name) {
+void XmlParser::open(std::string file_name) {
     std::ifstream fin(file_name);
     if (fin.fail())
         parse_error("Not found " + file_name);
@@ -18,8 +18,8 @@ void XMLParser::open(std::string file_name) {
     xml = str;
 }
 
-XMLTree *XMLParser::parse() {
-    auto root = new XMLTree;
+XmlTree *XmlParser::parse() {
+    auto root = new XmlTree;
     while (p < xml.length()) {
         skip_space();
         // read begin tag
@@ -32,7 +32,7 @@ XMLTree *XMLParser::parse() {
         // end tag abbreviation
         if (skip('/')) {
             expect_skip('>');
-            root->elements[tag] = new XMLTree;
+            root->elements[tag] = new XmlTree;
             for (auto attr : attrs)
                 root->elements[tag]->attributes[attr.first] = attr.second;
             skip_space();
@@ -49,9 +49,9 @@ XMLTree *XMLParser::parse() {
         if (tag != endTag)
             parse_error("Not found end tag, " + tag);
         if (text.find('<') == std::string::npos) {
-            root->elements[tag] = new XMLTree(tag, text);
+            root->elements[tag] = new XmlTree(tag, text);
         } else {
-            auto child = new XMLParser(text);
+            auto child = new XmlParser(text);
             root->elements[tag] = child->parse();
         }
         for (auto attr : attrs)
@@ -61,15 +61,15 @@ XMLTree *XMLParser::parse() {
     return root;
 }
 
-char XMLParser::consume() {
+char XmlParser::consume() {
     return xml[p++];
 }
 
-char XMLParser::read() {
+char XmlParser::read() {
     return xml[p];
 }
 
-std::string XMLParser::consume_until(char c) {
+std::string XmlParser::consume_until(char c) {
     std::string res;
     while (xml[p] != c) {
         res += consume();
@@ -77,7 +77,7 @@ std::string XMLParser::consume_until(char c) {
     return res;
 }
 
-std::string XMLParser::consume_until(std::string str) {
+std::string XmlParser::consume_until(std::string str) {
     std::string rem_str = xml.substr(p);
     size_t s = rem_str.find(str);
     if (s == std::string::npos)
@@ -86,7 +86,7 @@ std::string XMLParser::consume_until(std::string str) {
     return rem_str.substr(0, s);
 }
 
-void XMLParser::expect_skip(char c) {
+void XmlParser::expect_skip(char c) {
     std::string msg;
     if (xml[p] != c) {
         msg += c + " expected : " + xml[p];
@@ -95,12 +95,12 @@ void XMLParser::expect_skip(char c) {
     next();
 }
 
-void XMLParser::parse_error(std::string msg) {
+void XmlParser::parse_error(std::string msg) {
     std::cerr << "Parse error " + msg << std::endl;
     std::exit(1);
 }
 
-void XMLParser::skip_space() {
+void XmlParser::skip_space() {
     while (p < xml.length()) {
         if (xml[p] == ' ' || xml[p] == '\t' || xml[p] == '\n')
             next();
@@ -109,18 +109,18 @@ void XMLParser::skip_space() {
     }
 }
 
-void XMLParser::next() {
+void XmlParser::next() {
     ++p;
 }
 
-bool XMLParser::skip(char c) {
+bool XmlParser::skip(char c) {
     if (xml[p] != c)
         return false;
     next();
     return true;
 }
 
-std::map<std::string, std::string> XMLParser::parse_attribute() {
+std::map<std::string, std::string> XmlParser::parse_attribute() {
     std::map<std::string, std::string> attrs;
     if (read() == ' ') {
         while (read() != '>' && read() != '/') {

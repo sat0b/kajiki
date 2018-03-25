@@ -3,13 +3,13 @@
 
 #include <map>
 
-class XMLTree;
+class XmlTree;
 
-class XMLParser {
+class XmlParser {
 public:
-    XMLParser();
-    XMLParser(std::string xml);
-    XMLTree *parse();
+    XmlParser();
+    XmlParser(std::string xml);
+    XmlTree *parse();
     void open(std::string file_name);
 
 private:

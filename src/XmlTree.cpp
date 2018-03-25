@@ -1,12 +1,12 @@
 #include <iostream>
-#include "XMLTree.h"
+#include "XmlTree.h"
 
-XMLTree::XMLTree(std::string tag, std::string text) : tag(tag), text(text) {}
+XmlTree::XmlTree(std::string tag, std::string text) : tag(tag), text(text) {}
 
-std::ostream &operator<<(std::ostream &os, const XMLTree &xml_tree) {
+std::ostream &operator<<(std::ostream &os, const XmlTree &xml_tree) {
     for (auto element : xml_tree.elements) {
         std::string tag_name = element.first;
-        XMLTree *child = element.second;
+        XmlTree *child = element.second;
         os << "<" << tag_name;
         for (auto attr : element.second->attributes) {
             std::string attr_name = attr.first;

@@ -1,13 +1,13 @@
 #include <iostream>
-#include "XMLParser.h"
-#include "XMLTree.h"
+#include "XmlParser.h"
+#include "XmlTree.h"
 
 int main(int argc, char **argv) {
-    XMLParser xml_parser;
+    XmlParser xml_parser;
     if (argc == 2) {
         std::string file_name = argv[1];
         xml_parser.open(file_name);
-        XMLTree *root = xml_parser.parse();
+        XmlTree *root = xml_parser.parse();
         std::cout << *root << std::endl;
     }
 }

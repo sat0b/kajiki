@@ -4,16 +4,16 @@
 #include <string>
 #include <map>
 
-class XMLTree {
+class XmlTree {
 public:
-    XMLTree() = default;
-    XMLTree(std::string tag, std::string text);
+    XmlTree() = default;
+    XmlTree(std::string tag, std::string text);
     std::string tag;
     std::string text;
-    std::map<std::string, XMLTree *> elements;
+    std::map<std::string, XmlTree *> elements;
     std::map<std::string, std::string> attributes;
 };
 
-std::ostream &operator<<(std::ostream &os, const XMLTree &xml_tree);
+std::ostream &operator<<(std::ostream &os, const XmlTree &xml_tree);
 
 #endif //KAJIKI_XMLTREE_H
