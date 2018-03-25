@@ -8,10 +8,10 @@ XMLParser::XMLParser() : p(0) {}
 XMLParser::XMLParser(std::string xml) :
         xml(xml), p(0) {}
 
-void XMLParser::open(std::string fileName) {
-    std::ifstream fin(fileName);
+void XMLParser::open(std::string file_name) {
+    std::ifstream fin(file_name);
     if (fin.fail())
-        parse_error("Not found " + fileName);
+        parse_error("Not found " + file_name);
     std::istreambuf_iterator<char> it(fin);
     std::istreambuf_iterator<char> last;
     std::string str(it, last);
@@ -78,12 +78,12 @@ std::string XMLParser::consume_until(char c) {
 }
 
 std::string XMLParser::consume_until(std::string str) {
-    std::string remStr = xml.substr(p);
-    size_t s = remStr.find(str);
+    std::string rem_str = xml.substr(p);
+    size_t s = rem_str.find(str);
     if (s == std::string::npos)
-        parse_error("Not found " + str + " in " + remStr);
+        parse_error("Not found " + str + " in " + rem_str);
     p += s;
-    return remStr.substr(0, s);
+    return rem_str.substr(0, s);
 }
 
 void XMLParser::expect_skip(char c) {

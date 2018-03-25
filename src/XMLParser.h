@@ -10,7 +10,7 @@ public:
     XMLParser();
     XMLParser(std::string xml);
     XMLTree *parse();
-    void open(std::string fileName);
+    void open(std::string file_name);
 
 private:
     size_t p;

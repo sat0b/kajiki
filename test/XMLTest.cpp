@@ -3,53 +3,54 @@
 #include "../src/XMLTree.h"
 
 TEST(unitTests, readSingleElementTag) {
-    XMLParser xmlParser("<foo>bar</foo>");
-    XMLTree *xmlTree = xmlParser.parse();
-    EXPECT_EQ("foo", xmlTree->elements["foo"]->tag);
+    XMLParser xml_parser("<foo>bar</foo>");
+    XMLTree *xml_tree = xml_parser.parse();
+    EXPECT_EQ("foo", xml_tree->elements["foo"]->tag);
 }
 
 TEST(unitTests, readSingleElement) {
-    XMLParser xmlParser("<foo>bar</foo>");
-    XMLTree *xmlTree = xmlParser.parse();
-    EXPECT_EQ("bar", xmlTree->elements["foo"]->text);
+    XMLParser xml_parser("<foo>bar</foo>");
+    XMLTree *xml_tree = xml_parser.parse();
+    EXPECT_EQ("bar", xml_tree->elements["foo"]->text);
 }
 
 TEST(unitTests, readNestedElementText) {
-    XMLParser xmlParser("<foo><bar>baz</bar></foo>");
-    XMLTree *xmlTree = xmlParser.parse();
-    EXPECT_EQ("baz", xmlTree->elements["foo"]->elements["bar"]->text);
+    XMLParser xml_parser("<foo><bar>baz</bar></foo>");
+    XMLTree *xml_tree = xml_parser.parse();
+    EXPECT_EQ("baz", xml_tree->elements["foo"]->elements["bar"]->text);
 }
 
 TEST(unitTests, readNestedMultipleElement) {
-    XMLParser xmlParser("<foo><bar1>baz1</bar1><bar2>baz2</bar2></foo>");
-    XMLTree *xmlTree = xmlParser.parse();
-    EXPECT_EQ("baz1", xmlTree->elements["foo"]->elements["bar1"]->text);
-    EXPECT_EQ("baz2", xmlTree->elements["foo"]->elements["bar2"]->text);
+    XMLParser xml_parser("<foo><bar1>baz1</bar1><bar2>baz2</bar2></foo>");
+    XMLTree *xml_tree = xml_parser.parse();
+    EXPECT_EQ("baz1", xml_tree->elements["foo"]->elements["bar1"]->text);
+    EXPECT_EQ("baz2", xml_tree->elements["foo"]->elements["bar2"]->text);
 }
 
 TEST(unitTests, readAttribute) {
-    XMLParser xmlParser("<foo attr=\"baz\">bar</foo>");
-    XMLTree *xmlTree = xmlParser.parse();
-    EXPECT_EQ("baz", xmlTree->elements["foo"]->attributes["attr"]);
+    XMLParser xml_parser("<foo attr=\"baz\">bar</foo>");
+    XMLTree *xml_tree = xml_parser.parse();
+    EXPECT_EQ("baz", xml_tree->elements["foo"]->attributes["attr"]);
 }
 
 TEST(unitTests, readMultipleAttribute) {
-    XMLParser xmlParser("<foo attr=\"baz\"><bar attr1=\"a\" attr2=\"b\">baz</bar></foo>");
-    XMLTree *xmlTree = xmlParser.parse();
-    EXPECT_EQ("a", xmlTree->elements["foo"]->elements["bar"]->attributes["attr1"]);
-    EXPECT_EQ("b", xmlTree->elements["foo"]->elements["bar"]->attributes["attr2"]);
+    XMLParser xml_parser("<foo attr=\"baz\"><bar attr1=\"a\" attr2=\"b\">baz</bar></foo>");
+    XMLTree *xml_tree = xml_parser.parse();
+    EXPECT_EQ("a", xml_tree->elements["foo"]->elements["bar"]->attributes["attr1"]);
+    EXPECT_EQ("b", xml_tree->elements["foo"]->elements["bar"]->attributes["attr2"]);
 }
 
 TEST(unitTests, loadFile) {
-    XMLParser xmlParser;
-    xmlParser.open("test/xml/test.xml");
-    XMLTree *xmlTree = xmlParser.parse();
-    EXPECT_EQ("Title", xmlTree->elements["page"]->elements["title"]->text);
-    EXPECT_EQ("10", xmlTree->elements["page"]->elements["revision"]->elements["id"]->text);
+    XMLParser xml_parser;
+    xml_parser.open("test/xml/test.xml");
+    XMLTree *xml_tree = xml_parser.parse();
+    EXPECT_EQ("Title", xml_tree->elements["page"]->elements["title"]->text);
+    EXPECT_EQ("10", xml_tree->elements["page"]->elements["revision"]->elements["id"]->text);
 }
 
 TEST(unitTests, readAbbr) {
-    XMLParser xmlParser("<text id=\"10\" bytes=\"150\" />");
-    XMLTree *xmlTree = xmlParser.parse();
-    EXPECT_EQ("10", xmlTree->elements["text"]->attributes["id"]);
+    XMLParser xml_parser("<text id=\"10\" bytes=\"150\" />");
+    XMLTree *xml_tree = xml_parser.parse();
+    EXPECT_EQ("10", xml_tree->elements["text"]->attributes["id"]);
 }
+

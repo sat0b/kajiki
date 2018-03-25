@@ -3,8 +3,8 @@
 
 XMLTree::XMLTree(std::string tag, std::string text) : tag(tag), text(text) {}
 
-std::ostream &operator<<(std::ostream &os, const XMLTree &xmlTree) {
-    for (auto element : xmlTree.elements) {
+std::ostream &operator<<(std::ostream &os, const XMLTree &xml_tree) {
+    for (auto element : xml_tree.elements) {
         std::string tag_name = element.first;
         XMLTree *child = element.second;
         os << "<" << tag_name;
