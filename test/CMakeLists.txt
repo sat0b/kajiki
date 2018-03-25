@@ -1,9 +1,9 @@
 project(unitTests)
 
-add_executable(xmlTest
+add_executable(xml_test
         ${CMAKE_CURRENT_SOURCE_DIR}/XmlTest.cpp)
 
-target_link_libraries(xmlTest
+target_link_libraries(xml_test
         XmlParser
         XmlTree
         gtest

@@ -24,6 +24,13 @@ XmlTree *XmlParser::parse() {
         skip_space();
         // read begin tag
         expect_skip('<');
+        // skip xml declaration
+        if (skip('?')) {
+            consume_until("?>");
+            expect_skip('?');
+            expect_skip('>');
+            continue;
+        }
         std::string tag;
         while (read() != ' ' && read() != '>' && read() != '/')
             tag += consume();
@@ -46,9 +53,9 @@ XmlTree *XmlParser::parse() {
         // read end tag
         expect_skip('<');
         expect_skip('/');
-        std::string endTag = consume_until('>');
+        std::string end_tag = consume_until('>');
         expect_skip('>');
-        if (tag != endTag)
+        if (tag != end_tag)
             parse_error("Not found end tag, " + tag);
         XmlTree *child;
         if (text.find('<') == std::string::npos) {
