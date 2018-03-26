@@ -6,10 +6,13 @@
 
 class Tokenizer {
 public:
-    explicit Tokenizer(std::wstring text);
-    std::vector<std::wstring> get_bigram();
+    explicit Tokenizer(std::string text);
+    std::vector<std::string> get_bigram();
 public:
-    std::wstring text;
+    std::string next_utf8_char();
+    std::string read_utf8_char();
+    size_t p;
+    std::string text;
 };
 
 

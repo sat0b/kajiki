@@ -2,12 +2,12 @@
 #include "../src/Tokenizer.h"
 
 TEST(tokenizer_tests, test1) {
-    Tokenizer tokenizer(L"こんにちは世界");
+    Tokenizer tokenizer("こんにちは世界");
     auto bigrams = tokenizer.get_bigram();
-    EXPECT_EQ(L"こん", bigrams[0]);
-    EXPECT_EQ(L"んに", bigrams[1]);
-    EXPECT_EQ(L"にち", bigrams[2]);
-    EXPECT_EQ(L"ちは", bigrams[3]);
-    EXPECT_EQ(L"は世", bigrams[4]);
-    EXPECT_EQ(L"世界", bigrams[5]);
+    EXPECT_EQ("こん", bigrams[0]);
+    EXPECT_EQ("んに", bigrams[1]);
+    EXPECT_EQ("にち", bigrams[2]);
+    EXPECT_EQ("ちは", bigrams[3]);
+    EXPECT_EQ("は世", bigrams[4]);
+    EXPECT_EQ("世界", bigrams[5]);
 }

@@ -1,12 +1,20 @@
 #include <iostream>
 #include "XmlParser.h"
 #include "XmlTree.h"
+#include "Tokenizer.h"
 
 int main(int argc, char **argv) {
-    XmlParser xml_parser;
-    if (argc == 2) {
-        std::string file_name = argv[1];
-        xml_parser.open(file_name);
-        XmlTree *root = xml_parser.parse();
-    }
+    Tokenizer tokenizer("こんにちは世界");
+    auto bigrams = tokenizer.get_bigram();
+    std::cout << bigrams[0] << std::endl;
+    std::cout << bigrams[1] << std::endl;
+    std::cout << bigrams[2] << std::endl;
+
+//    XmlParser xml_parser;
+//    if (argc == 2) {
+//        std::string file_name = argv[1];
+//        xml_parser.open(file_name);
+//        XmlTree *root = xml_parser.parse();
+//        std::cout << *root << std::endl;
+//    }
 }
