@@ -23,26 +23,22 @@ std::string Tokenizer::next_utf8_char() {
 std::string Tokenizer::read_utf8_char() {
     auto c0 = static_cast<unsigned char>(text[p]);
     auto c1 = static_cast<unsigned char>(text[p + 1]);
-    if (0b00000000 <= c0 && c0 <= 0b01111111) {
-        auto ret = text.substr(p, 1);
-        return ret;
-    }
+
+    if (0b00000000 <= c0 && c0 <= 0b01111111)
+        return text.substr(p, 1);
+
     if (0b11000000 <= c0 && c0 <= 0b11011111 &&
-        0b10000000 <= c1 && c1 <= 0b10111111) {
-        auto ret = text.substr(p, 2);
-        return ret;
-    }
+        0b10000000 <= c1 && c1 <= 0b10111111)
+        return text.substr(p, 2);
+
     if (0b11100000 <= c0 && c0 <= 0b11101111 &&
-        0b10000000 <= c1 && c1 <= 0b10111111) {
-        auto ret = text.substr(p, 3);
-        return ret;
-    }
+        0b10000000 <= c1 && c1 <= 0b10111111)
+        return text.substr(p, 3);
+
     if (0b11110000 <= c0 && c0 <= 0b11110111 &&
-        0b10000000 <= c1 && c1 <= 0b10111111) {
-        auto ret = text.substr(p, 4);
-        return ret;
-    }
-    auto ret = text.substr(p, 1);
-    return ret;
+        0b10000000 <= c1 && c1 <= 0b10111111)
+        return text.substr(p, 4);
+
+    return text.substr(p, 1);
 }
 

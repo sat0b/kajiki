@@ -8,7 +8,8 @@ class Tokenizer {
 public:
     explicit Tokenizer(std::string text);
     std::vector<std::string> get_bigram();
-public:
+
+private:
     std::string next_utf8_char();
     std::string read_utf8_char();
     size_t p;
