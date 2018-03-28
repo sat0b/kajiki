@@ -6,3 +6,11 @@ Document::Document(std::string title, std::string text) :
 std::string Document::to_string() {
     return title + ":" + text;
 }
+
+std::string Document::get_title() {
+    return title;
+}
+
+std::string Document::get_text() {
+    return text;
+}
