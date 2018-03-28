@@ -13,9 +13,12 @@ public:
     std::vector<XmlTree *> find_all(std::string key);
     XmlTree *find(std::string key);
     std::string tag;
-    std::string text;
     std::multimap<std::string, XmlTree *> elements;
     std::map<std::string, std::string> attributes;
+    std::string get_text();
+
+private:
+    std::string text;
 };
 
 std::ostream &operator<<(std::ostream &os, const XmlTree &xml_tree);

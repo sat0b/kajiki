@@ -24,6 +24,10 @@ XmlTree *XmlTree::find(std::string key) {
         return itr->second;
 }
 
+std::string XmlTree::get_text() {
+    return text;
+}
+
 std::ostream &operator<<(std::ostream &os, const XmlTree &xml_tree) {
     for (auto element : xml_tree.elements) {
         std::string tag_name = element.first;
@@ -36,7 +40,7 @@ std::ostream &operator<<(std::ostream &os, const XmlTree &xml_tree) {
         }
         os << ">";
         if (child->elements.empty())
-            os << child->text;
+            os << child->get_text();
         else
             os << *child;
         os << "</" << tag_name << ">";
