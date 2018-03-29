@@ -5,7 +5,7 @@
 
 Indexer::Indexer(std::vector<Document> documents) : documents(documents) {}
 
-void Indexer::output() {
+std::map<std::string, std::vector<int>> Indexer::output() {
     for (Document document : documents) {
         std::string title = document.get_title();
         int document_id = document.get_id();
@@ -15,11 +15,5 @@ void Indexer::output() {
             posting_list[index].push_back(document_id);
         }
     }
-    for (auto index :  posting_list) {
-        std::cout << index.first << ": ";
-        for (auto id : index.second)
-            std::cout << id << ",";
-        std::cout << std::endl;
-    }
+    return posting_list;
 }
-

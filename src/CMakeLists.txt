@@ -15,4 +15,5 @@ target_link_libraries(${PROJECT_NAME}
         Tokenizer
         Document
         WikiLoader
-        Indexer)
+        Indexer
+        Searcher)

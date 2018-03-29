@@ -5,6 +5,7 @@
 #include "WikiLoader.h"
 #include "Document.h"
 #include "Indexer.h"
+#include "Searcher.h"
 
 int main(int argc, char **argv) {
 //    Tokenizer tokenizer("こんにちは世界");
@@ -21,6 +22,11 @@ int main(int argc, char **argv) {
         WikiLoader wiki_loader(root);
         std::vector<Document> documents = wiki_loader.load();
         Indexer indexer(documents);
-        indexer.output();
+        std::map<std::string, std::vector<int>> posting_list = indexer.output();
+        Searcher searcher(posting_list);
+        std::vector<int> id_list = searcher.search("Wi");
+        for (int id : id_list) {
+            std::cout << id << std::endl;
+        }
     }
 }

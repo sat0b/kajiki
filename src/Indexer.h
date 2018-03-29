@@ -8,7 +8,7 @@
 class Indexer {
 public:
     explicit Indexer(std::vector<Document> documents);
-    void output();
+    std::map<std::string, std::vector<int>> output();
 
 private:
     std::vector<Document> documents;
