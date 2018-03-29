@@ -4,6 +4,7 @@
 #include "Tokenizer.h"
 #include "WikiLoader.h"
 #include "Document.h"
+#include "Indexer.h"
 
 int main(int argc, char **argv) {
 //    Tokenizer tokenizer("こんにちは世界");
@@ -18,9 +19,8 @@ int main(int argc, char **argv) {
         xml_parser.open(file_name);
         XmlTree *root = xml_parser.parse();
         WikiLoader wiki_loader(root);
-        auto documents = wiki_loader.load();
-        for (auto document : documents) {
-            std::cout << document.to_string() << std::endl;
-        }
+        std::vector<Document> documents = wiki_loader.load();
+        Indexer indexer(documents);
+        indexer.output();
     }
 }

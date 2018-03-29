@@ -6,6 +6,7 @@ WikiLoader::WikiLoader(XmlTree *xml_tree) : xml_tree(xml_tree) {}
 
 std::vector<Document> WikiLoader::load() {
     std::vector<Document> documents;
+    int document_id = 0;
     for (auto page : xml_tree->find("mediawiki")->find_all("page")) {
         auto title = page->find("title");
         std::string dtitle;
@@ -17,7 +18,8 @@ std::vector<Document> WikiLoader::load() {
             auto text = revision->find("text");
             dtext = text->get_text();
         }
-        documents.emplace_back(dtitle, dtext);
+        documents.emplace_back(document_id, dtitle, dtext);
+        ++document_id;
     }
     return documents;
 }

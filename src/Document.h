@@ -6,14 +6,16 @@
 
 class Document {
 public:
-    Document(std::string title, std::string text);
+    Document(int document_id, std::string title, std::string text);
     std::string to_string();
     std::string get_title();
     std::string get_text();
+    int get_id();
 
 private:
     std::string title;
     std::string text;
+    int document_id;
 };
 
 
