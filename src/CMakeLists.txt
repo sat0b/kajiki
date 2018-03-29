@@ -13,7 +13,7 @@ target_link_libraries(${PROJECT_NAME}
         XmlParser
         XmlTree
         Tokenizer
-        Document
         WikiLoader
+        Document
         Indexer
         Searcher)
