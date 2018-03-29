@@ -2,7 +2,7 @@
 #include "Tokenizer.h"
 
 Searcher::Searcher(std::map<std::string, std::vector<int>> posting_list) :
-    posting_list(posting_list) {}
+    posting_list(std::move(posting_list)) {}
 
 std::vector<int> Searcher::search(std::string query) {
     std::vector<int> id_list;
