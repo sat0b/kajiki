@@ -22,7 +22,12 @@ int main(int argc, char **argv) {
         WikiLoader wiki_loader(root);
         std::vector<Document> documents = wiki_loader.load();
         Indexer indexer(documents);
-        std::map<std::string, std::vector<int>> posting_list = indexer.output();
+        indexer.output_storage();
+
+        Indexer index_reader(documents);
+        index_reader.read_storage();
+        std::map<std::string, std::vector<int>> posting_list = index_reader.get_posting_list();
+
         Searcher searcher(posting_list);
         std::vector<int> id_list = searcher.search("Wi");
         for (int id : id_list) {

@@ -8,9 +8,12 @@
 class Indexer {
 public:
     explicit Indexer(std::vector<Document> documents);
-    std::map<std::string, std::vector<int>> output();
+    std::map<std::string, std::vector<int>> get_posting_list();
+    void output_storage();
+    void read_storage();
 
 private:
+    void make_posting_list();
     std::vector<Document> documents;
     std::map<std::string, std::vector<int>> posting_list;
 };
