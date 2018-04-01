@@ -24,12 +24,8 @@ int main(int argc, char **argv) {
         Indexer indexer(documents);
         indexer.output_storage();
 
-        Indexer index_reader(documents);
-        index_reader.read_storage();
-        std::map<std::string, std::vector<int>> posting_list = index_reader.get_posting_list();
-
-        Searcher searcher(posting_list);
-        std::vector<int> id_list = searcher.search("Wi");
+        Searcher searcher;
+        std::vector<int> id_list = searcher.search("Wikipedia");
         for (int id : id_list) {
             std::cout << id << std::endl;
         }

@@ -58,7 +58,7 @@ void Indexer::read_storage() {
         std::string col;
         while (std::getline(ss, col, delimiter)) {
             int document_id = std::stoi(col);
-            posting_list[col].push_back(document_id);
+            posting_list[index].push_back(document_id);
         }
     }
     ifs.close();

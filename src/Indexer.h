@@ -7,6 +7,7 @@
 
 class Indexer {
 public:
+    Indexer() = default;
     explicit Indexer(std::vector<Document> documents);
     std::map<std::string, std::vector<int>> get_posting_list();
     void output_storage();

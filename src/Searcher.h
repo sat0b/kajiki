@@ -5,6 +5,7 @@
 
 class Searcher {
 public:
+    explicit Searcher();
     explicit Searcher(std::map<std::string, std::vector<int>> posting_list);
     std::vector<int> search(std::string query);
 
