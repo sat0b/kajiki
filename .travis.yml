@@ -10,6 +10,7 @@ addons:
       - clang-3.7
       - cmake
       - cmake-data
+      - lcov
 
 compiler:
   - clang
@@ -26,6 +27,15 @@ install:
   - export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:$PWD/include
   - export LIBRARY_PATH=$LIBRARY_PATH:$PWD
   - cd -
+
+after_success:
+    # Creating report
+  - cd ${TRAVIS_BUILD_DIR}
+  - lcov --directory . --capture --output-file coverage.info # capture coverage info
+  - lcov --remove coverage.info '/usr/*' --output-file coverage.info # filter out system
+  - lcov --list coverage.info #debug info
+  # Uploading report to CodeCov
+  - bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
 
 script:
   - mkdir build
