@@ -7,6 +7,9 @@ set(CMAKE_VERBOSE_MAKEFILE TRUE)
 add_subdirectory(src)
 add_subdirectory(test)
 
+include(CMakeModules/CodeCoverage.cmake)
+setup_target_for_coverage(${PROJECT_NAME}_coverage tests coverage)
+
 enable_testing()
 add_test(NAME xml_test COMMAND xml_test)
 add_test(NAME tokenizer_test COMMAND tokenizer_test)
