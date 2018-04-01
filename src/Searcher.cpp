@@ -1,5 +1,4 @@
 #include <iostream>
-#include <algorithm>
 #include "Searcher.h"
 #include "Tokenizer.h"
 #include "Indexer.h"

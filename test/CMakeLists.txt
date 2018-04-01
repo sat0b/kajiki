@@ -6,6 +6,10 @@ add_executable(tokenizer_test
         ${CMAKE_CURRENT_SOURCE_DIR}/TokenizerTest.cpp)
 add_executable(wikiloader_test
         ${CMAKE_CURRENT_SOURCE_DIR}/WikiLoaderTest.cpp)
+add_executable(indexer_test
+        ${CMAKE_CURRENT_SOURCE_DIR}/IndexerTest.cpp)
+add_executable(searcher_test
+        ${CMAKE_CURRENT_SOURCE_DIR}/SearcherTest.cpp)
 
 target_link_libraries(xml_test
         XmlParser
@@ -25,6 +29,24 @@ target_link_libraries(wikiloader_test
         WikiLoader
         XmlParser
         XmlTree
+        gtest
+        gtest_main
+        pthread)
+
+target_link_libraries(indexer_test
+        Indexer
+        Tokenizer
+        Document
+        gtest
+        gmock
+        gtest_main
+        pthread)
+
+target_link_libraries(searcher_test
+        Searcher
+        Tokenizer
+        Indexer
+        Document
         gtest
         gtest_main
         pthread)
