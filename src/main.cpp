@@ -7,27 +7,37 @@
 #include "Indexer.h"
 #include "Searcher.h"
 
-int main(int argc, char **argv) {
-//    Tokenizer tokenizer("こんにちは世界");
-//    auto bigrams = tokenizer.get_bigram();
-//    std::cout << bigrams[0] << std::endl;
-//    std::cout << bigrams[1] << std::endl;
-//    std::cout << bigrams[2] << std::endl;
-
+void run_command_line(std::string file_name) {
     XmlParser xml_parser;
-    if (argc == 2) {
-        std::string file_name = argv[1];
-        xml_parser.open(file_name);
-        XmlTree *root = xml_parser.parse();
-        WikiLoader wiki_loader(root);
-        std::vector<Document> documents = wiki_loader.load();
-        Indexer indexer(documents);
-        indexer.output_storage();
+    xml_parser.open(file_name);
+    XmlTree *root = xml_parser.parse();
+    WikiLoader wiki_loader(root);
+    std::vector<Document> documents = wiki_loader.load();
+    Indexer indexer(documents);
+    indexer.output_storage();
+    Searcher searcher;
 
-        Searcher searcher;
-        std::vector<int> id_list = searcher.search("Wikipedia");
-        for (int id : id_list) {
-            std::cout << id << std::endl;
+    std::string query;
+    for (;;) {
+        std::cout << "Query: ";
+        std::cin >> query;
+        if (query == "exit")
+            break;
+
+        std::vector<int> id_list = searcher.search(query);
+        if (id_list.size() == 0) {
+            std::cout << "Zero match" << std::endl;
+            continue;
         }
+
+        for (int id : id_list) {
+            std::cout << "document_id: " << id << "\n";
+        }
+    }
+}
+
+int main(int argc, char **argv) {
+    if (argc == 2) {
+        run_command_line(argv[1]);
     }
 }
