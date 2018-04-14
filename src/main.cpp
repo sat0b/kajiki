@@ -10,8 +10,7 @@
 void run_command_line(std::string file_name) {
     XmlParser xml_parser;
     xml_parser.open(file_name);
-    XmlTree *root = xml_parser.parse();
-    WikiLoader wiki_loader(root);
+    WikiLoader wiki_loader(xml_parser.parse());
     std::vector<Document> documents = wiki_loader.load();
     Indexer indexer(documents);
     indexer.output_storage();

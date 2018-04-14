@@ -5,11 +5,14 @@
 #include <map>
 #include <vector>
 
+#include <iostream>
+
 class XmlTree {
 public:
     XmlTree() = default;
     explicit XmlTree(std::multimap<std::string, XmlTree *> elements);
     XmlTree(std::string tag, std::string text);
+    ~XmlTree();
     std::vector<XmlTree *> find_all(std::string key);
     XmlTree *find(std::string key);
     std::string tag;

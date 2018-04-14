@@ -28,6 +28,11 @@ std::string XmlTree::get_text() {
     return text;
 }
 
+XmlTree::~XmlTree() {
+    for (auto element : elements)
+        delete element.second;
+}
+
 std::ostream &operator<<(std::ostream &os, const XmlTree &xml_tree) {
     for (auto element : xml_tree.elements) {
         std::string tag_name = element.first;
