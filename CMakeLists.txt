@@ -17,3 +17,5 @@ add_test(NAME tokenizer_test COMMAND tokenizer_test)
 add_test(NAME wikiloader_test COMMAND wikiloader_test)
 add_test(NAME indexer_test COMMAND indexer_test)
 add_test(NAME searcher_test COMMAND searcher_test)
+add_test(NAME wiki_xml_parser_test COMMAND wiki_xml_parser_test)
+
