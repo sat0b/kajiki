@@ -18,19 +18,15 @@ std::string WikiXmlParser::extract_page_tag() {
     // read beginning of page tag
     for (;;) {
         tag = read_tag();
+        if (tag == "")
+            return "";
+
         if (tag == "page")
             break;
     }
 
     // read element of page tag
     std::string page_element = read_element();
-
-    // read end of page tag
-    for (;;) {
-        tag = read_tag();
-        if (tag == "/page")
-            break;
-    }
 
     return page_element;
 }
@@ -54,12 +50,17 @@ std::string WikiXmlParser::read_element() {
     std::string element;
     char c;
     while ((c = next()) != '\0') {
-        if (c == '<')
-            break;
-        element += c;
+        if (c == '<') {
+            // back to '<'
+            back(1);
+            std::string tag = read_tag();
+            if (tag == "/page")
+                break;
+            element += '<' + tag + '>';
+        } else {
+            element += c;
+        }
     }
-    // back to '<'
-    xml_stream_.seekg(-1, std::ios_base::cur);
     return element;
 }
 
@@ -69,4 +70,8 @@ char WikiXmlParser::next() {
         return '\0';
     xml_stream_ >> c;
     return c;
+}
+
+void WikiXmlParser::back(int n) {
+    xml_stream_.seekg(-n, std::ios_base::cur);
 }

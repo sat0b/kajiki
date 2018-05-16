@@ -16,6 +16,7 @@ private:
     std::string read_tag();
     std::string read_element();
     char next();
+    void back(int n);
 
 };
 
