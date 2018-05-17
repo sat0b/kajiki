@@ -34,8 +34,8 @@ target_link_libraries(searcher_test
         pthread)
 
 target_link_libraries(wiki_xml_parser_test
-        WikiXmlParser
         Document
+        WikiXmlParser
         gtest
         gtest_main
         pthread)

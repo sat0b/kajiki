@@ -1,7 +1,6 @@
 #ifndef KAJIKI_DOCUMENT_H
 #define KAJIKI_DOCUMENT_H
 
-
 #include <string>
 
 class Document {
