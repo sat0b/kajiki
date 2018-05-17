@@ -22,9 +22,9 @@ std::string WikiXmlParser::extract_tag_element(std::string page,
                                                std::string tag) {
     std::string begin_tag = "<" + tag + ">";
     std::string end_tag = "</" + tag + ">";
-    int begin_pos = page.find(begin_tag) + begin_tag.length();
-    int end_pos = page.find(end_tag) - begin_pos;
-    return page.substr(begin_pos, end_pos);
+    size_t begin_pos = page.find(begin_tag) + begin_tag.length();
+    size_t length = page.find(end_tag) - begin_pos;
+    return page.substr(begin_pos, length);
 }
 
 std::string WikiXmlParser::extract_page_tag() {
