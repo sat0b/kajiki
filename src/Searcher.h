@@ -1,7 +1,7 @@
 #ifndef KAJIKI_SEARCHER_H
 #define KAJIKI_SEARCHER_H
 
-#include "XmlTree.h"
+#include <map>
 
 class Searcher {
 public:

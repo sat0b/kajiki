@@ -2,10 +2,7 @@
 #include "Indexer.h"
 #include "Searcher.h"
 #include "Tokenizer.h"
-#include "WikiLoader.h"
 #include "WikiXmlParser.h"
-#include "XmlParser.h"
-#include "XmlTree.h"
 #include <iostream>
 
 class App {
