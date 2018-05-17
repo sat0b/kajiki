@@ -2,11 +2,10 @@
 #define KAJIKI_WIKIXMLPARSER_H
 #include <fstream>
 
-// XML Parser Class for wikipedia XML format
+// XML Parser Class for Wikipedia XML format
 class WikiXmlParser {
   public:
     explicit WikiXmlParser(std::string xml_name);
-
     void parse();
 
   private:

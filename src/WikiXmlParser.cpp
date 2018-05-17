@@ -1,28 +1,30 @@
 #include "WikiXmlParser.h"
+#include "Document.h"
 #include <iostream>
 
 WikiXmlParser::WikiXmlParser(std::string xml_name) : xml_stream_(xml_name) {}
 
 void WikiXmlParser::parse() {
     std::string page;
+    int document_id = 0;
     for (;;) {
         page = extract_page_tag();
         if (page.length() == 0)
             break;
-        std::cout << page << "\n";
-        std::cout << "title:" << WikiXmlParser::extract_tag_element(page, "title") << "\n";
-        std::cout << "id:" << WikiXmlParser::extract_tag_element(page, "id") << "\n";
-
+        std::string title = extract_tag_element(page, "title");
+        Document document(document_id, title, "");
+        ++document_id;
+        std::cout << "Document: " << document.get_title() << "\n";
     }
 }
 
-std::string WikiXmlParser::extract_tag_element(std::string page, std::string tag) {
+std::string WikiXmlParser::extract_tag_element(std::string page,
+                                               std::string tag) {
     std::string begin_tag = "<" + tag + ">";
     std::string end_tag = "</" + tag + ">";
     int begin_pos = page.find(begin_tag) + begin_tag.length();
     int end_pos = page.find(end_tag) - begin_pos;
-    std::string title_element = page.substr(begin_pos, end_pos);
-    return title_element;
+    return page.substr(begin_pos, end_pos);
 }
 
 std::string WikiXmlParser::extract_page_tag() {

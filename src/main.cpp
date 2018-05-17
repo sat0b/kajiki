@@ -3,6 +3,7 @@
 #include "Searcher.h"
 #include "Tokenizer.h"
 #include "WikiLoader.h"
+#include "WikiXmlParser.h"
 #include "XmlParser.h"
 #include "XmlTree.h"
 #include <iostream>
@@ -10,12 +11,11 @@
 class App {
   public:
     void save_index(std::string file_name) {
-        XmlParser xml_parser;
-        xml_parser.open(file_name);
-        WikiLoader wiki_loader(xml_parser.parse());
-        std::vector<Document> documents = wiki_loader.load();
-        Indexer indexer(documents);
-        indexer.output_storage();
+        WikiXmlParser wiki_xml_parser(file_name);
+        wiki_xml_parser.parse();
+
+        // Indexer indexer(documents);
+        // indexer.output_storage();
     }
 
     void search() {
@@ -54,8 +54,10 @@ int main(int argc, char **argv) {
     App app;
     if (argc == 1) {
         app.search();
-    } else if (argc == 2) {
-        app.save_index(argv[1]);
+    } else if (argc == 3) {
+        std::string option = argv[1];
+        if (option == "-f")
+            app.save_index(argv[2]);
     } else {
         app.usage();
         exit(1);
