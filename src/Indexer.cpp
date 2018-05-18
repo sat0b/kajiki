@@ -11,12 +11,10 @@ Indexer::Indexer(std::vector<Document> documents) : documents(documents) {
 
 void Indexer::make_posting_list() {
     for (Document document : documents) {
-        std::string title = document.get_title();
-        int document_id = document.get_id();
-        Tokenizer tokenizer(title);
+        Tokenizer tokenizer(document.title);
         std::vector<std::string> bigrams = tokenizer.get_bigram();
         for (std::string index : bigrams) {
-            posting_list[index].push_back(document_id);
+            posting_list[index].push_back(document.id);
         }
     }
 }

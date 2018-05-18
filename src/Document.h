@@ -3,19 +3,11 @@
 
 #include <string>
 
-class Document {
-public:
-    Document(int document_id, std::string title, std::string text);
-    std::string to_string();
-    std::string get_title();
-    std::string get_text();
-    int get_id();
-
-private:
+struct Document {
+    int id;
     std::string title;
     std::string text;
-    int document_id;
+    Document(int id, std::string title, std::string text) : id(id), title(title), text(text) {}
 };
-
 
 #endif //KAJIKI_DOCUMENT_H

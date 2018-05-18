@@ -14,7 +14,7 @@ void WikiXmlParser::parse() {
         std::string title = extract_tag_element(page, "title");
         Document document(document_id, title, "");
         ++document_id;
-        std::cout << "Document: " << document.get_title() << "\n";
+        std::cout << "Document: " << document.title << "\n";
     }
 }
 
