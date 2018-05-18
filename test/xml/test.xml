@@ -1,8 +1,16 @@
 <page>
-    <title>Title</title>
+    <title>Title1</title>
     <id>3</id>
     <revision>
         <id>10</id>
         <parentid>5</parentid>
+    </revision>
+</page>
+<page>
+    <title>Title2</title>
+    <id>4</id>
+    <revision>
+        <id>5</id>
+        <parentid>6</parentid>
     </revision>
 </page>
