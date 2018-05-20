@@ -1,6 +1,7 @@
 #ifndef KAJIKI_WIKIXMLPARSER_H
 #define KAJIKI_WIKIXMLPARSER_H
 #include <fstream>
+#include <vector>
 #include "Document.h"
 
 // XML Parser Class for Wikipedia XML format

@@ -1,7 +1,4 @@
 #include "WikiXmlParser.h"
-#include "Document.h"
-#include <iostream>
-#include <vector>
 
 WikiXmlParser::WikiXmlParser(std::string xml_name, int n_document) :
         xml_stream_(xml_name), n_document_(n_document) {}

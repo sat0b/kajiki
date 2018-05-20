@@ -8,11 +8,15 @@
 class App {
   public:
     void save_index(std::string file_name) {
-        WikiXmlParser wiki_xml_parser(file_name);
-        wiki_xml_parser.parse();
-
-        // Indexer indexer(documents);
-        // indexer.output_storage();
+        WikiXmlParser wiki_xml_parser(file_name, 10);
+        std::vector<Document> documents;
+        for (;;) {
+            documents = wiki_xml_parser.parse_next();
+            if (documents.empty())
+                break;
+            Indexer indexer(documents);
+            indexer.output_storage();
+        }
     }
 
     void search() {
