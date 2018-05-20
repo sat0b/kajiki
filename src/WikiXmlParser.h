@@ -1,14 +1,16 @@
 #ifndef KAJIKI_WIKIXMLPARSER_H
 #define KAJIKI_WIKIXMLPARSER_H
 #include <fstream>
+#include "Document.h"
 
 // XML Parser Class for Wikipedia XML format
 class WikiXmlParser {
   public:
-    explicit WikiXmlParser(std::string xml_name);
-    void parse();
+    WikiXmlParser(std::string xml_name, int n_document);
+    std::vector<Document> parse_next();
 
   private:
+    int n_document_;
     std::ifstream xml_stream_;
 
     static std::string extract_tag_element(std::string page, std::string tag);

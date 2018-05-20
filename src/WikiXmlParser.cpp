@@ -1,21 +1,24 @@
 #include "WikiXmlParser.h"
 #include "Document.h"
 #include <iostream>
+#include <vector>
 
-WikiXmlParser::WikiXmlParser(std::string xml_name) : xml_stream_(xml_name) {}
+WikiXmlParser::WikiXmlParser(std::string xml_name, int n_document) :
+        xml_stream_(xml_name), n_document_(n_document) {}
 
-void WikiXmlParser::parse() {
+std::vector<Document> WikiXmlParser::parse_next() {
     std::string page;
     int document_id = 0;
-    for (;;) {
+    std::vector<Document> documents;
+    for (int i = 0; i < n_document_; i++) {
         page = extract_page_tag();
         if (page.length() == 0)
             break;
         std::string title = extract_tag_element(page, "title");
-        Document document(document_id, title, "");
+        documents.emplace_back(document_id, title, "");
         ++document_id;
-        std::cout << "Document: " << document.title << "\n";
     }
+    return documents;
 }
 
 std::string WikiXmlParser::extract_tag_element(std::string page,
