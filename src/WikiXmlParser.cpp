@@ -1,7 +1,14 @@
+#include <iostream>
 #include "WikiXmlParser.h"
+#include <unistd.h>
 
 WikiXmlParser::WikiXmlParser(std::string xml_name, int n_document) :
-        xml_stream_(xml_name), n_document_(n_document) {}
+    xml_stream_(xml_name), n_document_(n_document) {
+    if (xml_stream_.fail()) {
+        std::cerr << "Can't open file " << xml_name << std::endl;
+        std::exit(1);
+    }
+}
 
 std::vector<Document> WikiXmlParser::parse_next() {
     std::string page;

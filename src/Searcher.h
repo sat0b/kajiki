@@ -2,6 +2,7 @@
 #define KAJIKI_SEARCHER_H
 
 #include <map>
+#include <vector>
 
 class Searcher {
 public:
