@@ -14,6 +14,7 @@ public:
     void read_storage();
 
 private:
+    const static std::string file_name_;
     void make_posting_list();
     std::vector<Document> documents;
     std::map<std::string, std::vector<int>> posting_list;
