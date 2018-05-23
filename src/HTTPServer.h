@@ -7,10 +7,6 @@ class HTTPServer {
 public:
     HTTPServer(std::string address, int port);
 
-private:
-    std::string address_;
-    int port_;
-
 };
 
 
