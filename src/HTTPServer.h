@@ -7,6 +7,8 @@ class HTTPServer {
 public:
     HTTPServer(std::string address, int port);
 
+private:
+    int soc_;
 };
 
 

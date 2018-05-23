@@ -4,9 +4,10 @@
 #include <netdb.h>
 #include <iostream>
 #include <unistd.h>
+#include <string.h>
+
 
 HTTPServer::HTTPServer(std::string address, int port) {
-
     char service = static_cast<char>(port);
     struct addrinfo hints, *res;
     memset(&hints, 0, sizeof(hints));
@@ -31,8 +32,8 @@ HTTPServer::HTTPServer(std::string address, int port) {
     }
 
     // generate socket
-    int sock = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
-    if (sock == -1) {
+    soc_ = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+    if (soc_ == -1) {
         perror("socket");
         freeaddrinfo(res);
         exit(1);
@@ -41,28 +42,26 @@ HTTPServer::HTTPServer(std::string address, int port) {
     // configure socket option
     int opt = 1;
     socklen_t opt_len = sizeof(opt);
-    int soc;
-    if (setsockopt(soc, SOL_SOCKET, SO_REUSEADDR, &opt, opt_len) != -1) {
+    if (setsockopt(soc_, SOL_SOCKET, SO_REUSEADDR, &opt, opt_len) != -1) {
         perror("setsockopt");
-        close(soc);
+        close(soc_);
         freeaddrinfo(res);
         exit(1);
     }
 
     // bind address
-    if (bind(soc, res->ai_addr, res->ai_addrlen) == -1) {
+    if (bind(soc_, res->ai_addr, res->ai_addrlen) == -1) {
         perror("bind");
-        close(soc);
+        close(soc_);
         freeaddrinfo(res);
         exit(1);
     }
 
     // access back log
-    if (listen(soc, SOMAXCONN) == -1) {
+    if (listen(soc_, SOMAXCONN) == -1) {
         perror("listen");
-        close(soc);
+        close(soc_);
         exit(1);
     }
     freeaddrinfo(res);
-
 }
