@@ -5,10 +5,12 @@
 
 class HTTPServer {
 public:
-    HTTPServer(std::string address, int port);
+    HTTPServer(char *service);
+    void run();
 
 private:
     int soc_;
+    void send_recv(int acc);
 };
 
 
