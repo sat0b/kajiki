@@ -9,7 +9,6 @@ public:
     ~HTTPServer();
     void run();
 
-
 private:
     int soc_;
     int port_;

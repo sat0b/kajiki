@@ -90,7 +90,6 @@ void HTTPServer::run() {
     }
 }
 
-
 HTTPServer::~HTTPServer() {
     close(soc_);
 }
