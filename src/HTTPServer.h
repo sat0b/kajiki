@@ -5,13 +5,18 @@
 
 class HTTPServer {
 public:
-    HTTPServer(char *service);
+    HTTPServer(std::string service);
+    ~HTTPServer();
     void run();
+
 
 private:
     int soc_;
-    void send_recv(int acc);
+    int port_;
+    std::string recv_request(int acc);
+    void send_response(int acc, std::string response);
 };
 
+std::string make_http_message(std::string body);
 
 #endif //KAJIKI_HTTPSERVER_H
