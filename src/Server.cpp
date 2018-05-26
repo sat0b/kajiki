@@ -1,4 +1,4 @@
-#include "HTTPServer.h"
+#include "Server.h"
 #include <sys/socket.h>
 
 #include <netdb.h>
@@ -82,6 +82,7 @@ void HTTPServer::run() {
                         NI_NUMERICHOST|NI_NUMERICSERV);
             std::cerr << "Accept: " << hbuf << ":" << sbuf << "\n";
             std::string request = recv_request(acc);
+            HTTPRequest http_request(request);
             std::cout << request << std::endl;
             send_response(acc, request);
             close(acc);
@@ -100,16 +101,14 @@ std::string HTTPServer::recv_request(int acc) {
     ssize_t len;
     for (;;) {
         len = recv(acc, buf, sizeof(buf), 0);
-        std::cout << "--" << std::endl;
-        std::cout << len << std::endl;
         if (len == -1) {
             perror("recv");
             break;
         }
-        if (len == 0 || len < sizeof(buf))
-            break;
         buf[len] = '\0';
         request += buf;
+        if (len < sizeof(buf))
+            break;
     }
     return request;
 }
@@ -133,6 +132,26 @@ std::string make_http_message(std::string body) {
     return message.str();
 }
 
+HTTPRequest::HTTPRequest(std::string request) : request_(request) {
+    parse_request();
+}
+
+void HTTPRequest::parse_request() {
+    std::istringstream iss(request_);
+    std::string line;
+    while (getline(iss, line)) {
+        std::istringstream isline(line);
+        std::string key;
+        std::string value;
+        if (getline(isline, key, ':')) {
+            getline(isline, value, ':');
+            if (value[0] == ' ') {
+                value = value.substr(1);
+            }
+        }
+        headers_[key] = value;
+    }
+}
 
 int main() {
     HTTPServer server("8080");
