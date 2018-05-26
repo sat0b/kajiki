@@ -3,7 +3,7 @@
 
 TEST(tokenizer_tests, test1) {
     Tokenizer tokenizer("こんにちは世界");
-    auto bigrams = tokenizer.get_bigram();
+    auto bigrams = tokenizer.getBigram();
     EXPECT_EQ("こん", bigrams[0]);
     EXPECT_EQ("んに", bigrams[1]);
     EXPECT_EQ("にち", bigrams[2]);

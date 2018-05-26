@@ -12,8 +12,8 @@ include(CMakeModules/CodeCoverage.cmake)
 setup_target_for_coverage(${PROJECT_NAME}_coverage tests coverage)
 
 enable_testing()
-add_test(NAME tokenizer_test COMMAND tokenizer_test)
-add_test(NAME indexer_test COMMAND indexer_test)
-add_test(NAME searcher_test COMMAND searcher_test)
-add_test(NAME wiki_xml_parser_test COMMAND wiki_xml_parser_test)
+add_test(NAME tokenizerTest COMMAND tokenizerTest)
+add_test(NAME indexerTest COMMAND indexerTest)
+add_test(NAME searcherTest COMMAND searcherTest)
+add_test(NAME wikiXmlParserTest COMMAND wikiXmlParserTest)
 

@@ -4,33 +4,33 @@
 #include "Indexer.h"
 #include "Tokenizer.h"
 
-const std::string Indexer::file_name_ = "/tmp/kajiki.index";
+const std::string Indexer::fileName = "/tmp/kajiki.index";
 
 Indexer::Indexer(std::vector<Document> documents) : documents(documents) {
-    make_posting_list();
+    makePostingList();
 }
 
-void Indexer::make_posting_list() {
+void Indexer::makePostingList() {
     for (Document document : documents) {
         Tokenizer tokenizer(document.title);
-        std::vector<std::string> bigrams = tokenizer.get_bigram();
+        std::vector<std::string> bigrams = tokenizer.getBigram();
         for (std::string index : bigrams) {
-            posting_list[index].push_back(document.id);
+            postingList_[index].push_back(document.id);
         }
     }
 }
 
-std::map<std::string, std::vector<int>> Indexer::get_posting_list() {
-    return posting_list;
+std::map<std::string, std::vector<int>> Indexer::getPostingList() {
+    return postingList_;
 }
 
-void Indexer::output_storage() {
-    std::ofstream ofs(file_name_, std::ios::out);
+void Indexer::outputStorage() {
+    std::ofstream ofs(fileName, std::ios::out);
     if (!ofs.is_open()) {
-        std::cerr << "Cannot open " << file_name_ << std::endl;
+        std::cerr << "Cannot open " << fileName << std::endl;
         exit(1);
     }
-    for (auto posting : posting_list) {
+    for (auto posting : postingList_) {
         std::string index = posting.first;
         ofs << index << "\t";
         for (int document_id : posting.second)
@@ -40,11 +40,11 @@ void Indexer::output_storage() {
     ofs.close();
 }
 
-void Indexer::read_storage() {
+void Indexer::readStorage() {
     char delimiter = '\t';
-    std::ifstream ifs(file_name_, std::ios::in);
+    std::ifstream ifs(fileName, std::ios::in);
     if (!ifs.is_open()) {
-        std::cerr << "Not found " << file_name_ << std::endl;
+        std::cerr << "Not found " << fileName << std::endl;
         exit(1);
     }
     std::string line;
@@ -54,8 +54,8 @@ void Indexer::read_storage() {
         std::getline(ss, index, delimiter);
         std::string col;
         while (std::getline(ss, col, delimiter)) {
-            int document_id = std::stoi(col);
-            posting_list[index].push_back(document_id);
+            int documentId = std::stoi(col);
+            postingList_[index].push_back(documentId);
         }
     }
     ifs.close();

@@ -2,55 +2,54 @@
 #include "WikiXmlParser.h"
 #include <unistd.h>
 
-WikiXmlParser::WikiXmlParser(std::string xml_name, int n_document) :
-    xml_stream_(xml_name), n_document_(n_document) {
-    if (xml_stream_.fail()) {
-        std::cerr << "Can't open file " << xml_name << std::endl;
+WikiXmlParser::WikiXmlParser(std::string xmlName, int nDocument) :
+    xmlStream_(xmlName), nDocument_(nDocument) {
+    if (xmlStream_.fail()) {
+        std::cerr << "Can't open file " << xmlName << std::endl;
         std::exit(1);
     }
 }
 
-std::vector<Document> WikiXmlParser::parse_next() {
+std::vector<Document> WikiXmlParser::parseNext() {
     std::string page;
-    int document_id = 0;
+    int documentId = 0;
     std::vector<Document> documents;
-    for (int i = 0; i < n_document_; i++) {
-        page = extract_page_tag();
+    for (int i = 0; i < nDocument_; i++) {
+        page = extractPageTag();
         if (page.length() == 0)
             break;
-        std::string title = extract_tag_element(page, "title");
-        documents.emplace_back(document_id, title, "");
-        ++document_id;
+        std::string title = extractTagElement(page, "title");
+        documents.emplace_back(documentId, title, "");
+        ++documentId;
     }
     return documents;
 }
 
-std::string WikiXmlParser::extract_tag_element(std::string page,
-                                               std::string tag) {
-    std::string begin_tag = "<" + tag + ">";
-    std::string end_tag = "</" + tag + ">";
-    size_t begin_pos = page.find(begin_tag) + begin_tag.length();
-    size_t length = page.find(end_tag) - begin_pos;
-    return page.substr(begin_pos, length);
+std::string WikiXmlParser::extractTagElement(std::string page,
+                                             std::string tag) {
+    std::string beginTag = "<" + tag + ">";
+    std::string endTag = "</" + tag + ">";
+    size_t beginPos = page.find(beginTag) + beginTag.length();
+    size_t length = page.find(endTag) - beginPos;
+    return page.substr(beginPos, length);
 }
 
-std::string WikiXmlParser::extract_page_tag() {
+std::string WikiXmlParser::extractPageTag() {
     std::string tag;
     // read beginning of page tag
     for (;;) {
-        tag = read_tag();
+        tag = readTag();
         if (tag == "")
             return "";
         if (tag == "page")
             break;
     }
     // read element of page tag
-    std::string page_element = read_element();
-
-    return page_element;
+    std::string pageElement = readElement();
+    return pageElement;
 }
 
-std::string WikiXmlParser::read_tag() {
+std::string WikiXmlParser::readTag() {
     std::string tag;
     char c;
     while ((c = next()) != '\0') {
@@ -65,14 +64,14 @@ std::string WikiXmlParser::read_tag() {
     return tag;
 }
 
-std::string WikiXmlParser::read_element() {
+std::string WikiXmlParser::readElement() {
     std::string element;
     char c;
     while ((c = next()) != '\0') {
         if (c == '<') {
             // back to '<'
             back(1);
-            std::string tag = read_tag();
+            std::string tag = readTag();
             if (tag == "/page")
                 break;
             element += '<' + tag + '>';
@@ -85,10 +84,10 @@ std::string WikiXmlParser::read_element() {
 
 char WikiXmlParser::next() {
     char c;
-    if (xml_stream_.eof())
+    if (xmlStream_.eof())
         return '\0';
-    xml_stream_ >> c;
+    xmlStream_ >> c;
     return c;
 }
 
-void WikiXmlParser::back(int n) { xml_stream_.seekg(-n, std::ios_base::cur); }
+void WikiXmlParser::back(int n) { xmlStream_.seekg(-n, std::ios_base::cur); }

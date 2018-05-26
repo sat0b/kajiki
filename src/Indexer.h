@@ -9,15 +9,15 @@ class Indexer {
 public:
     Indexer() = default;
     explicit Indexer(std::vector<Document> documents);
-    std::map<std::string, std::vector<int>> get_posting_list();
-    void output_storage();
-    void read_storage();
+    std::map<std::string, std::vector<int>> getPostingList();
+    void outputStorage();
+    void readStorage();
 
 private:
-    const static std::string file_name_;
-    void make_posting_list();
+    const static std::string fileName;
+    void makePostingList();
     std::vector<Document> documents;
-    std::map<std::string, std::vector<int>> posting_list;
+    std::map<std::string, std::vector<int>> postingList_;
 };
 
 #endif //KAJIKI_INDEXER_H

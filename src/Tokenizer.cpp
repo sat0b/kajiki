@@ -2,25 +2,25 @@
 
 Tokenizer::Tokenizer(std::string text) : text(text), p(0) {}
 
-std::vector<std::string> Tokenizer::get_bigram() {
+std::vector<std::string> Tokenizer::getBigram() {
     std::vector<std::string> bigrams;
     std::string first;
     std::string second;
     while (p < text.length()) {
-        first = next_utf8_char();
-        second = read_utf8_char();
+        first = nextUtf8Char();
+        second = readUtf8Char();
         bigrams.push_back(first + second);
     }
     return bigrams;
 }
 
-std::string Tokenizer::next_utf8_char() {
-    std::string ret = read_utf8_char();
+std::string Tokenizer::nextUtf8Char() {
+    std::string ret = readUtf8Char();
     p += ret.length();
     return ret;
 }
 
-std::string Tokenizer::read_utf8_char() {
+std::string Tokenizer::readUtf8Char() {
     auto c0 = static_cast<unsigned char>(text[p]);
     auto c1 = static_cast<unsigned char>(text[p + 1]);
 

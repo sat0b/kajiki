@@ -7,11 +7,11 @@
 class Tokenizer {
 public:
     explicit Tokenizer(std::string text);
-    std::vector<std::string> get_bigram();
+    std::vector<std::string> getBigram();
 
 private:
-    std::string next_utf8_char();
-    std::string read_utf8_char();
+    std::string nextUtf8Char();
+    std::string readUtf8Char();
     size_t p;
     std::string text;
 };

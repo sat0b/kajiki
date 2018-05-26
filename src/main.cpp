@@ -7,15 +7,15 @@
 
 class App {
   public:
-    void save_index(std::string file_name) {
-        WikiXmlParser wiki_xml_parser(file_name, 10);
+    void saveIndex(std::string file_name) {
+        WikiXmlParser wikiXmlParser(file_name, 10);
         std::vector<Document> documents;
         for (;;) {
-            documents = wiki_xml_parser.parse_next();
+            documents = wikiXmlParser.parseNext();
             if (documents.empty())
                 break;
             Indexer indexer(documents);
-            indexer.output_storage();
+            indexer.outputStorage();
         }
     }
 
@@ -27,13 +27,13 @@ class App {
             if (query == "exit")
                 break;
 
-            std::vector<int> id_list = searcher_.search(query);
-            if (id_list.empty()) {
+            std::vector<int> idList = searcher_.search(query);
+            if (idList.empty()) {
                 std::cout << "Zero match" << std::endl;
                 continue;
             }
 
-            for (int id : id_list) {
+            for (int id : idList) {
                 std::cout << "document_id: " << id << "\n";
             }
         }
@@ -58,7 +58,7 @@ int main(int argc, char **argv) {
     } else if (argc == 3) {
         std::string option = argv[1];
         if (option == "-f")
-            app.save_index(argv[2]);
+            app.saveIndex(argv[2]);
     } else {
         app.usage();
         exit(1);

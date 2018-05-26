@@ -2,7 +2,7 @@ add_library(Searcher STATIC Searcher.cpp)
 add_library(Tokenizer STATIC Tokenizer.cpp)
 add_library(Indexer STATIC Indexer.cpp)
 add_library(WikiXmlParser STATIC WikiXmlParser.cpp)
-add_library(HTTPServer STATIC Server.cpp)
+add_library(Server STATIC Server.cpp)
 
 add_executable(${PROJECT_NAME} main.cpp)
 
@@ -11,4 +11,4 @@ target_link_libraries(${PROJECT_NAME}
         Tokenizer
         Indexer
         WikiXmlParser
-        HTTPServer)
+        Server)

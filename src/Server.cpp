@@ -81,10 +81,10 @@ void HTTPServer::run() {
                         sbuf, sizeof(sbuf),
                         NI_NUMERICHOST|NI_NUMERICSERV);
             std::cerr << "Accept: " << hbuf << ":" << sbuf << "\n";
-            std::string request = recv_request(acc);
+            std::string request = recvRequest(acc);
             HTTPRequest http_request(request);
             std::cout << request << std::endl;
-            send_response(acc, request);
+            sendResponse(acc, request);
             close(acc);
             acc = 0;
         }
@@ -95,7 +95,7 @@ HTTPServer::~HTTPServer() {
     close(soc_);
 }
 
-std::string HTTPServer::recv_request(int acc) {
+std::string HTTPServer::recvRequest(int acc) {
     std::string request;
     char buf[512], *ptr;
     ssize_t len;
@@ -113,9 +113,9 @@ std::string HTTPServer::recv_request(int acc) {
     return request;
 }
 
-void HTTPServer::send_response(int acc, std::string request) {
+void HTTPServer::sendResponse(int acc, std::string request) {
     std::string body = "<!DOCTYPE html><html><head><title>Test</title></head><body>Hello World</body></html>";
-    std::string response = make_http_message(body);
+    std::string response = makeHttpMessage(body);
     std::cout << "response: " << response;
     ssize_t len = send(acc, response.c_str(), (size_t)response.length(), 0);
     if (len == -1) {
@@ -123,7 +123,7 @@ void HTTPServer::send_response(int acc, std::string request) {
     }
 }
 
-std::string make_http_message(std::string body) {
+std::string makeHttpMessage(std::string body) {
     std::stringstream message;
     message << "HTTP/1.0 200 OK\r\n"
             << "Content-Length: " << body.length() << "\r\n"
@@ -133,10 +133,10 @@ std::string make_http_message(std::string body) {
 }
 
 HTTPRequest::HTTPRequest(std::string request) : request_(request) {
-    parse_request();
+    parseRequest();
 }
 
-void HTTPRequest::parse_request() {
+void HTTPRequest::parseRequest() {
     std::istringstream iss(request_);
     std::string line;
     while (getline(iss, line)) {

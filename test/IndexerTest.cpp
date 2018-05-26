@@ -5,33 +5,33 @@
 
 using ::testing::ElementsAre;
 
-TEST(indexer_test, posting_list_test) {
+TEST(indexerTest, postingListTest) {
     std::vector<Document> documents;
     documents.emplace_back(1, "ab", "");
     documents.emplace_back(2, "abcd", "");
     documents.emplace_back(3, "cd", "");
     Indexer indexer(documents);
-    std::map<std::string, std::vector<int>> posting_list = indexer.get_posting_list();
-    ASSERT_THAT(posting_list["ab"], ElementsAre(1, 2));
-    ASSERT_THAT(posting_list["cd"], ElementsAre(2, 3));
+    std::map<std::string, std::vector<int>> postingList = indexer.getPostingList();
+    ASSERT_THAT(postingList["ab"], ElementsAre(1, 2));
+    ASSERT_THAT(postingList["cd"], ElementsAre(2, 3));
 }
 
-TEST(indexer_test, indexer_output_test) {
+TEST(indexerTest, indexerOutputTest) {
     std::vector<Document> documents;
     documents.emplace_back(1, "ab", "");
     documents.emplace_back(2, "abcd", "");
     documents.emplace_back(3, "cd", "");
     Indexer indexer(documents);
-    indexer.output_storage();
+    indexer.outputStorage();
     struct stat buffer;
     ASSERT_TRUE(stat("/tmp/kajiki.index", &buffer) == 0);
 }
 
 
-TEST(indexer_test, indexer_read_test) {
+TEST(indexerTest, indexerReadTest) {
     Indexer indexer;
-    indexer.read_storage();
-    std::map<std::string, std::vector<int>> posting_list = indexer.get_posting_list();
-    ASSERT_THAT(posting_list["ab"], ElementsAre(1, 2));
-    ASSERT_THAT(posting_list["cd"], ElementsAre(2, 3));
+    indexer.readStorage();
+    std::map<std::string, std::vector<int>> postingList = indexer.getPostingList();
+    ASSERT_THAT(postingList["ab"], ElementsAre(1, 2));
+    ASSERT_THAT(postingList["cd"], ElementsAre(2, 3));
 }

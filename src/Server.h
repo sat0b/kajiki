@@ -12,7 +12,7 @@ public:
     }
 private:
     std::string request_;
-    void parse_request();
+    void parseRequest();
     std::map<std::string, std::string> headers_;
 };
 
@@ -25,10 +25,10 @@ public:
 private:
     int soc_;
     int port_;
-    std::string recv_request(int acc);
-    void send_response(int acc, std::string response);
+    std::string recvRequest(int acc);
+    void sendResponse(int acc, std::string response);
 };
 
-std::string make_http_message(std::string body);
+std::string makeHttpMessage(std::string body);
 
 #endif //KAJIKI_SERVER_H

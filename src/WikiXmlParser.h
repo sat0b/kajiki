@@ -7,17 +7,17 @@
 // XML Parser Class for Wikipedia XML format
 class WikiXmlParser {
   public:
-    WikiXmlParser(std::string xml_name, int n_document);
-    std::vector<Document> parse_next();
+    WikiXmlParser(std::string xmlName, int nDocument);
+    std::vector<Document> parseNext();
 
   private:
-    int n_document_;
-    std::ifstream xml_stream_;
+    int nDocument_;
+    std::ifstream xmlStream_;
 
-    static std::string extract_tag_element(std::string page, std::string tag);
-    std::string extract_page_tag();
-    std::string read_tag();
-    std::string read_element();
+    static std::string extractTagElement(std::string page, std::string tag);
+    std::string extractPageTag();
+    std::string readTag();
+    std::string readElement();
     char next();
     void back(int n);
 };

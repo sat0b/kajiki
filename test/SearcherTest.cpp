@@ -5,26 +5,26 @@
 
 using ::testing::ElementsAre;
 
-TEST(seacher_test, searcher_test) {
+TEST(searcherTest, searcherTest) {
     std::vector<Document> documents;
     documents.emplace_back(1, "ab", "");
     documents.emplace_back(2, "abcd", "");
     documents.emplace_back(3, "cd", "");
     Indexer indexer(documents);
-    std::map<std::string, std::vector<int>> posting_list = indexer.get_posting_list();
-    Searcher searcher(posting_list);
+    std::map<std::string, std::vector<int>> postingList = indexer.getPostingList();
+    Searcher searcher(postingList);
     ASSERT_THAT(searcher.search("ab"), ElementsAre(1, 2));
     ASSERT_THAT(searcher.search("cd"), ElementsAre(2, 3));
 }
 
-TEST(seacher_test, searcher_initialized_by_storage_index) {
+TEST(searcherTest, searcherInitializedByStorageIndex) {
     // output index
     std::vector<Document> documents;
     documents.emplace_back(1, "ab", "");
     documents.emplace_back(2, "abcd", "");
     documents.emplace_back(3, "cd", "");
     Indexer indexer(documents);
-    indexer.output_storage();
+    indexer.outputStorage();
 
     // search
     Searcher searcher;

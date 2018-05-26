@@ -4,26 +4,26 @@
 #include "Tokenizer.h"
 #include "Indexer.h"
 
-Searcher::Searcher(std::map<std::string, std::vector<int>> posting_list) :
-    posting_list(std::move(posting_list)) {}
+Searcher::Searcher(std::map<std::string, std::vector<int>> postingList) :
+    postingList_(std::move(postingList)) {}
 
 Searcher::Searcher() {
     Indexer indexer;
-    indexer.read_storage();
-    posting_list = indexer.get_posting_list();
+    indexer.readStorage();
+    postingList_ = indexer.getPostingList();
 }
 
 std::vector<int> Searcher::search(std::string query) {
-    std::vector<int> id_list;
+    std::vector<int> idList;
     Tokenizer tokenizer(query);
-    std::vector<std::string> bigrams = tokenizer.get_bigram();
+    std::vector<std::string> bigrams = tokenizer.getBigram();
     for (std::string q : bigrams) {
-        if (posting_list.count(q) > 0) {
-            for (int document_id : posting_list[q]) {
-                if (std::find(id_list.begin(), id_list.end(), document_id) == id_list.end())
-                    id_list.push_back(document_id);
+        if (postingList_.count(q) > 0) {
+            for (int documentId : postingList_[q]) {
+                if (std::find(idList.begin(), idList.end(), documentId) == idList.end())
+                    idList.push_back(documentId);
             }
         }
     }
-    return id_list;
+    return idList;
 }
