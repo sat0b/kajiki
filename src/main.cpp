@@ -1,15 +1,13 @@
 #include "Document.h"
 #include "Indexer.h"
 #include "Searcher.h"
-#include "Tokenizer.h"
 #include "WikiXmlParser.h"
 #include "Server.h"
 #include <iostream>
-#include <string>
 
 class App {
 public:
-  App() : server_("8080") {}
+  App() : server_(8080) {}
 
   void saveIndex(std::string filename) {
     WikiXmlParser wikiXmlParser(filename, 10);

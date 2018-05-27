@@ -42,14 +42,13 @@ public:
 
 private:
   std::string body_;
-  std::string response_;
   std::string type_;
   int statusCode_ = 200;
 };
 
 class Server {
 public:
-  explicit Server(std::string service);
+  explicit Server(int port);
   ~Server();
   void run();
   void addHandler(std::string pattern, std::function<Response(Request)> func);
@@ -61,7 +60,5 @@ private:
   Request recvRequest(int acc);
   void sendResponse(int acc, Request request);
 };
-
-std::string makeHttpMessage(std::string body);
 
 #endif //KAJIKI_SERVER_H

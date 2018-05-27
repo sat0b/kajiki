@@ -4,13 +4,11 @@
 #include <netdb.h>
 #include <iostream>
 #include <unistd.h>
-#include <string.h>
 #include <sstream>
 
 
-Server::Server(std::string service) {
-  // TODO: Error handling
-  port_ = stoi(service);
+Server::Server(int port) : port_(port) {
+  std::string service = std::to_string(port_);
 
   struct addrinfo hints, *res;
   memset(&hints, 0, sizeof(hints));
@@ -84,7 +82,6 @@ void Server::run() {
       Request request = recvRequest(acc);
       sendResponse(acc, request);
       close(acc);
-      acc = 0;
     }
   }
 }
