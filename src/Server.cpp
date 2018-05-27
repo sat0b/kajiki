@@ -6,9 +6,16 @@
 #include <iostream>
 #include <unistd.h>
 #include <sstream>
+#include <signal.h>
 
 
 Server::Server(int port) : port_(port) {
+  initSocket();
+  setSignal();
+}
+
+
+void Server::initSocket() {
   std::string service = std::to_string(port_);
 
   struct addrinfo hints, *res;
@@ -61,13 +68,30 @@ Server::Server(int port) : port_(port) {
   freeaddrinfo(res);
 }
 
+bool Server::killed = false;
+
+void Server::setKilled(int sig) {
+  killed = true;
+}
+
+void Server::setSignal() {
+  struct sigaction act;
+  act.sa_handler = setKilled;
+  act.sa_flags = 0;
+  sigemptyset(&act.sa_mask);
+  if (sigaction(SIGUSR1, &act, NULL) < 0) {
+    perror("sigaction");
+    std::exit(1);
+  }
+}
+
 void Server::run() {
   std::cout << "Server is running on " << port_ << "...\n";
   char hbuf[NI_MAXHOST], sbuf[NI_MAXSERV];
   struct sockaddr_storage from;
   socklen_t len;
   int acc;
-  for (;;) {
+  while (!killed) {
     len = (socklen_t) sizeof(from);
     acc = accept(soc_, (struct sockaddr *) &from, &len);
     if (acc == -1) {
@@ -85,6 +109,7 @@ void Server::run() {
       close(acc);
     }
   }
+  std::cout << "Server is terminated ..." << std::endl;
 }
 
 Server::~Server() {

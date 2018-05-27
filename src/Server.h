@@ -56,9 +56,13 @@ public:
 private:
   int soc_;
   int port_;
+  static bool killed;
   std::map<std::string, std::function<Response(Request)>> handlers_;
+  void initSocket();
+  void setSignal();
   Request recvRequest(int acc);
   void sendResponse(int acc, Request request);
+  static void setKilled(int sig);
 };
 
 #endif //KAJIKI_SERVER_H
