@@ -7,7 +7,7 @@
 Searcher::Searcher(std::map<std::string, std::vector<int>> postingList) :
     postingList_(std::move(postingList)) {}
 
-Searcher::Searcher() {
+void Searcher::loadIndex() {
     Indexer indexer;
     indexer.readStorage();
     postingList_ = indexer.getPostingList();

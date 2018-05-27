@@ -3,6 +3,7 @@
 
 #include <string>
 #include <map>
+#include <vector>
 
 class Request {
 public:
@@ -29,13 +30,14 @@ public:
     explicit Server(std::string service);
     ~Server();
     void run();
+    void addHandler(std::string pattern, std::function<Response(Request)> func);
 
 private:
     int soc_;
     int port_;
+    std::vector<std::function<Response(Request)>> handlers_;
     Request recvRequest(int acc);
-    Response makeResponse(Request request);
-    void sendResponse(int acc, Response response);
+    void sendResponse(int acc, Request request);
 };
 
 std::string makeHttpMessage(std::string body);

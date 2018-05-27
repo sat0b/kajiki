@@ -6,8 +6,9 @@
 
 class Searcher {
 public:
-    explicit Searcher();
+    Searcher() = default;
     explicit Searcher(std::map<std::string, std::vector<int>> postingList);
+    void loadIndex();
     std::vector<int> search(std::string query);
 
 private:

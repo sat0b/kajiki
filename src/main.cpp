@@ -3,12 +3,15 @@
 #include "Searcher.h"
 #include "Tokenizer.h"
 #include "WikiXmlParser.h"
+#include "Server.h"
 #include <iostream>
 
 class App {
   public:
-    void saveIndex(std::string file_name) {
-        WikiXmlParser wikiXmlParser(file_name, 10);
+    App() : server_("8080") {}
+
+    void saveIndex(std::string fileName) {
+        WikiXmlParser wikiXmlParser(fileName, 10);
         std::vector<Document> documents;
         for (;;) {
             documents = wikiXmlParser.parseNext();
@@ -20,23 +23,11 @@ class App {
     }
 
     void search() {
-        std::string query;
-        for (;;) {
-            std::cout << "Query: ";
-            std::cin >> query;
-            if (query == "exit")
-                break;
-
-            std::vector<int> idList = searcher_.search(query);
-            if (idList.empty()) {
-                std::cout << "Zero match" << std::endl;
-                continue;
-            }
-
-            for (int id : idList) {
-                std::cout << "document_id: " << id << "\n";
-            }
-        }
+        server_.addHandler("/", [=](Request request) {
+            std::string body = R"({"Result": [{"name": "test1"},{"name": "test2"}]})";
+            return Response(body);
+        });
+        server_.run();
     }
 
     void usage() {
@@ -49,13 +40,14 @@ class App {
 
   private:
     Searcher searcher_;
+    Server server_;
 };
 
 int main(int argc, char **argv) {
     App app;
     if (argc == 1) {
         app.search();
-    } else if (argc == 3) {
+    } else if (argc > 1) {
         std::string option = argv[1];
         if (option == "-f")
             app.saveIndex(argv[2]);

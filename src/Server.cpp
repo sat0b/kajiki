@@ -82,8 +82,7 @@ void Server::run() {
                         NI_NUMERICHOST|NI_NUMERICSERV);
             std::cerr << "Accept: " << hbuf << ":" << sbuf << "\n";
             Request request = recvRequest(acc);
-            Response response = makeResponse(request);
-            sendResponse(acc, response);
+            sendResponse(acc, request);
             close(acc);
             acc = 0;
         }
@@ -96,7 +95,7 @@ Server::~Server() {
 
 Request Server::recvRequest(int acc) {
     std::string req;
-    char buf[512], *ptr;
+    char buf[512];
     ssize_t len;
     for (;;) {
         len = recv(acc, buf, sizeof(buf), 0);
@@ -112,18 +111,19 @@ Request Server::recvRequest(int acc) {
     return Request(req);
 }
 
-Response Server::makeResponse(Request request) {
-    std::string body = "<!DOCTYPE html><html><head><title>Test</title></head><body>Hello World</body></html>";
-    return Response(body);
+void Server::sendResponse(int acc, Request request) {
+    for (auto handler : handlers_) {
+        Response response = handler(request);
+        std::string res = response.getString();
+        ssize_t len = send(acc, res.c_str(), (size_t)res.length(), 0);
+        if (len == -1) {
+            perror("send");
+        }
+    }
 }
 
-void Server::sendResponse(int acc, Response response) {
-    std::string res = response.getString();
-    ssize_t len = send(acc, res.c_str(), (size_t)res.length(), 0);
-    std::cout << "response: " << response.getString();
-    if (len == -1) {
-        perror("send");
-    }
+void Server::addHandler(std::string pattern, std::function<Response(Request)> func) {
+    handlers_.push_back(func);
 }
 
 Request::Request(std::string request) : request_(request) {
@@ -149,18 +149,13 @@ void Request::parseRequest() {
 
 Response::Response(std::string body) {
     std::stringstream header;
-    header << "HTTP/1.0 200 OK\r\n"
+    header << "HTTP/1.1 200 OK\r\n"
             << "Content-Length: " << body.length() << "\r\n"
-            << "Content-type: text/html\r\n\r\n"
+            << "Content-type: application/json\r\n\r\n"
             << body;
     response_ = header.str();
 }
 
 std::string Response::getString() {
     return response_;
-}
-
-int main() {
-    Server server("8080");
-    server.run();
 }
