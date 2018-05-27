@@ -28,7 +28,11 @@ public:
       std::string query = params["query"];
       std::cout << "query: " << query << std::endl;
       std::vector<int> idList = searcher_.search(query);
-      std::string body = "{\"Result\": {\"documentId\":[";
+      int nHit = static_cast<int>(idList.size());
+      std::string body = "{";
+      body += "\"Hit\": " + std::to_string(nHit) + ",";
+      body += "\"Query\": \"" + query + "\",";
+      body += R"("Result": {"documentId":[)";
       for (int i = 0; i < idList.size(); i++) {
         int id = idList[i];
         body += std::to_string(id);

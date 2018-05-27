@@ -9,10 +9,7 @@
 #include <signal.h>
 
 
-Server::Server(int port) : port_(port) {
-  initSocket();
-  setSignal();
-}
+Server::Server(int port) : port_(port) {}
 
 void Server::initSocket() {
   std::string service = std::to_string(port_);
@@ -85,6 +82,9 @@ void Server::setSignal() {
 }
 
 void Server::run() {
+  initSocket();
+  setSignal();
+
   std::cout << "Server is running on " << port_ << "...\n";
   char hbuf[NI_MAXHOST], sbuf[NI_MAXSERV];
   struct sockaddr_storage from;
