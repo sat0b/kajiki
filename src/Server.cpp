@@ -113,7 +113,13 @@ Request Server::recvRequest(int acc) {
 
 void Server::sendResponse(int acc, Request request) {
     for (auto handler : handlers_) {
-        Response response = handler(request);
+        std::string pattern = handler.first;
+        std::function<Response(Request)> func = handler.second;
+        Response response;
+        if (request.getPattern() == pattern)
+            response = func(request);
+        else
+            response.setNotFound();
         std::string res = response.getString();
         ssize_t len = send(acc, res.c_str(), (size_t)res.length(), 0);
         if (len == -1) {
@@ -123,7 +129,7 @@ void Server::sendResponse(int acc, Request request) {
 }
 
 void Server::addHandler(std::string pattern, std::function<Response(Request)> func) {
-    handlers_.push_back(func);
+    handlers_[pattern] = func;
 }
 
 Request::Request(std::string request) : request_(request) {
@@ -168,15 +174,35 @@ void Request::parseURI() {
     }
 }
 
-Response::Response(std::string body) {
-    std::stringstream header;
-    header << "HTTP/1.1 200 OK\r\n"
-            << "Content-Length: " << body.length() << "\r\n"
-            << "Content-type: application/json\r\n\r\n"
-            << body;
-    response_ = header.str();
+void Response::setContentType(std::string type) {
+    type_ = type;
+}
+
+void Response::setBody(std::string body) {
+    body_ = body;
+}
+
+void Response::setStatus(int statusCode) {
+    statusCode_ = statusCode;
+}
+
+void Response::setNotFound() {
+    setContentType("text/plain");
+    setStatus(404);
+    setBody("404 page not found");
 }
 
 std::string Response::getString() {
-    return response_;
+    std::stringstream res;
+    res << "HTTP/1.1 ";
+    if (statusCode_ == 200)
+        res << "200 OK\r\n";
+    else
+        res << "404 Not Found\r\n";
+    res << "Content-type: " << type_ << "\r\n";
+    res << "X-Content-Type-Options: nosniff\r\n";
+    res << "Content-Length: " << body_.length() << "\r\n";
+    res << "\r\n";
+    res << body_ << "\n";
+    return res.str();
 }

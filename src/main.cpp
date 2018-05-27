@@ -11,8 +11,8 @@ class App {
   public:
     App() : server_("8080") {}
 
-    void saveIndex(std::string fileName) {
-        WikiXmlParser wikiXmlParser(fileName, 10);
+    void saveIndex(std::string filename) {
+        WikiXmlParser wikiXmlParser(filename, 10);
         std::vector<Document> documents;
         for (;;) {
             documents = wikiXmlParser.parseNext();
@@ -25,7 +25,7 @@ class App {
 
     void search() {
         searcher_.loadIndex();
-        server_.addHandler("/", [=](Request request) {
+        server_.addHandler("/search", [=](Request request) {
             std::map<std::string, std::string> params = request.getParams();
             std::string query = params["query"];
             std::cout << "query: " << query << std::endl;
@@ -38,7 +38,10 @@ class App {
                     body += ",";
             }
             body += "]}}";
-            return Response(body);
+            Response response;
+            response.setContentType("application/json");
+            response.setBody(body);
+            return response;
         });
         server_.run();
     }

@@ -11,6 +11,9 @@ public:
     std::string getHeader(const std::string &header) {
         return headers_[header];
     }
+    std::string getPattern() {
+        return pattern_;
+    }
     std::map<std::string, std::string> getParams();
 private:
     std::string request_;
@@ -26,10 +29,18 @@ private:
 
 class Response {
 public:
-    explicit Response(std::string body);
+    Response() = default;
     std::string getString();
+    void setContentType(std::string type);
+    void setBody(std::string body);
+    void setStatus(int statusCode);
+    void setNotFound();
+
 private:
+    std::string body_;
     std::string response_;
+    std::string type_;
+    int statusCode_ = 200;
 };
 
 class Server {
@@ -42,7 +53,7 @@ public:
 private:
     int soc_;
     int port_;
-    std::vector<std::function<Response(Request)>> handlers_;
+    std::map<std::string, std::function<Response(Request)>> handlers_;
     Request recvRequest(int acc);
     void sendResponse(int acc, Request request);
 };
