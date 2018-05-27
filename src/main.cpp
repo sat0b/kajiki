@@ -5,6 +5,45 @@
 #include "Server.h"
 #include <iostream>
 
+class Json {
+public:
+  Json() = default;
+
+  void addField(std::string key, std::string value) {
+    json_ += quote(key) + ":" + quote(value) + ",";
+  }
+
+  void addField(std::string key, int value) {
+    json_ += quote(key) + ":" + std::to_string(value) + ",";
+  }
+
+  void addField(std::string key, std::vector<int> values) {
+    json_ += quote(key) + ":" + "[";
+    for (int i = 0; i < values.size(); i++) {
+      if (i != values.size() - 1)
+        json_ += std::to_string(values[i]) + ",";
+      else
+        json_ += std::to_string(values[i]);
+    }
+    json_ += "],";
+  }
+
+  void addField(std::string key, Json json) {
+    json_ += "\"" + key + "\":" + json.getString() + ",";
+  }
+
+  std::string getString() {
+    return "{" + json_.substr(0, json_.length() - 1) + "}";
+  }
+
+private:
+  std::string json_;
+
+  std::string quote(std::string str) {
+    return "\"" + str + "\"";
+  }
+};
+
 class App {
 public:
   App() : server_(8080) {}
@@ -29,20 +68,14 @@ public:
       std::cout << "query: " << query << std::endl;
       std::vector<int> idList = searcher_.search(query);
       int nHit = static_cast<int>(idList.size());
-      std::string body = "{";
-      body += "\"Hit\": " + std::to_string(nHit) + ",";
-      body += "\"Query\": \"" + query + "\",";
-      body += R"("Result": {"documentId":[)";
-      for (int i = 0; i < idList.size(); i++) {
-        int id = idList[i];
-        body += std::to_string(id);
-        if (i != idList.size() - 1)
-          body += ",";
-      }
-      body += "]}}";
+      Json json, docJson;
+      docJson.addField("documentId", idList);
+      json.addField("Hit", nHit);
+      json.addField("Query", query);
+      json.addField("Result", docJson);
       Response response;
       response.setContentType("application/json");
-      response.setBody(body);
+      response.setBody(json.getString());
       return response;
     });
     server_.run();

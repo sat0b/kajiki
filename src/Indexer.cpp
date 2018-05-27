@@ -4,7 +4,7 @@
 #include "Indexer.h"
 #include "Tokenizer.h"
 
-const std::string Indexer::fileName = "/tmp/kajiki.index";
+const std::string Indexer::filename = "/tmp/kajiki.index";
 
 Indexer::Indexer(std::vector<Document> documents) : documents(documents) {
   makePostingList();
@@ -25,16 +25,16 @@ std::map<std::string, std::vector<int>> Indexer::getPostingList() {
 }
 
 void Indexer::outputStorage() {
-  std::ofstream ofs(fileName, std::ios::out);
+  std::ofstream ofs(filename, std::ios::out);
   if (!ofs.is_open()) {
-    std::cerr << "Cannot open " << fileName << std::endl;
+    std::cerr << "Cannot open " << filename << std::endl;
     exit(1);
   }
   for (auto posting : postingList_) {
     std::string index = posting.first;
     ofs << index << "\t";
-    for (int document_id : posting.second)
-      ofs << document_id << "\t";
+    for (int documentID : posting.second)
+      ofs << documentID << "\t";
     ofs << std::endl;
   }
   ofs.close();
@@ -42,9 +42,9 @@ void Indexer::outputStorage() {
 
 void Indexer::readStorage() {
   char delimiter = '\t';
-  std::ifstream ifs(fileName, std::ios::in);
+  std::ifstream ifs(filename, std::ios::in);
   if (!ifs.is_open()) {
-    std::cerr << "Not found " << fileName << std::endl;
+    std::cerr << "Not found " << filename << std::endl;
     exit(1);
   }
   std::string line;
