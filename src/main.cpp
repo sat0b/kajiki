@@ -4,6 +4,7 @@
 #include "WikiXmlParser.h"
 #include "Server.h"
 #include <iostream>
+#include <glog/logging.h>
 
 class Json {
 public:
@@ -65,7 +66,7 @@ public:
     server_.addHandler("/search", [=](Request request) {
       std::map<std::string, std::string> params = request.getParams();
       std::string query = params["query"];
-      std::cout << "query: " << query << std::endl;
+      LOG(INFO) << "query: " << query << std::endl;
       std::vector<int> idList = searcher_.search(query);
       int nHit = static_cast<int>(idList.size());
       Json json, docJson;
@@ -95,6 +96,11 @@ private:
 };
 
 int main(int argc, char **argv) {
+  // Initialize Google's logging library.
+  google::InitGoogleLogging(argv[0]);
+  google::InstallFailureSignalHandler();
+  google::ParseCommandLineFlags(&argc, &argv, true);
+
   App app;
   if (argc == 1) {
     app.search();

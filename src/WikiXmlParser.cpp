@@ -1,11 +1,12 @@
 #include <iostream>
 #include "WikiXmlParser.h"
 #include <unistd.h>
+#include <glog/logging.h>
 
 WikiXmlParser::WikiXmlParser(std::string xmlName, int nDocument) :
   xmlStream_(xmlName), nDocument_(nDocument) {
   if (xmlStream_.fail()) {
-    std::cerr << "Can't open file " << xmlName << std::endl;
+    LOG(ERROR) << "Can't open file " << xmlName << std::endl;
     std::exit(1);
   }
 }

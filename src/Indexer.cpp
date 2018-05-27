@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <glog/logging.h>
 #include "Indexer.h"
 #include "Tokenizer.h"
 
@@ -27,7 +28,7 @@ std::map<std::string, std::vector<int>> Indexer::getPostingList() {
 void Indexer::outputStorage() {
   std::ofstream ofs(filename, std::ios::out);
   if (!ofs.is_open()) {
-    std::cerr << "Cannot open " << filename << std::endl;
+    LOG(ERROR) << "Cannot open " << filename << std::endl;
     exit(1);
   }
   for (auto posting : postingList_) {
@@ -44,7 +45,7 @@ void Indexer::readStorage() {
   char delimiter = '\t';
   std::ifstream ifs(filename, std::ios::in);
   if (!ifs.is_open()) {
-    std::cerr << "Not found " << filename << std::endl;
+    LOG(ERROR) << "Not found " << filename << std::endl;
     exit(1);
   }
   std::string line;

@@ -3,7 +3,7 @@ project(kajiki)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_VERBOSE_MAKEFILE TRUE)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O0 -g -coverage")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O0 -lglog -lgflags -coverage")
 
 add_subdirectory(src)
 add_subdirectory(test)
@@ -16,4 +16,3 @@ add_test(NAME tokenizerTest COMMAND tokenizerTest)
 add_test(NAME indexerTest COMMAND indexerTest)
 add_test(NAME searcherTest COMMAND searcherTest)
 add_test(NAME wikiXmlParserTest COMMAND wikiXmlParserTest)
-

@@ -28,6 +28,7 @@ install:
   - export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:$PWD/include
   - export LIBRARY_PATH=$LIBRARY_PATH:$PWD
   - cd -
+  - sudo apt-get install libgflags-dev libgoogle-glog-dev
 
 after_success:
     # Creating report

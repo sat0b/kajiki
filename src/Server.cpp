@@ -1,13 +1,12 @@
 #include "Server.h"
 #include <cstring>
 #include <sys/socket.h>
-
 #include <netdb.h>
-#include <iostream>
 #include <unistd.h>
-#include <sstream>
 #include <signal.h>
-
+#include <iostream>
+#include <sstream>
+#include <glog/logging.h>
 
 Server::Server(int port) : port_(port) {}
 
@@ -22,7 +21,7 @@ void Server::initSocket() {
 
   int errcode = getaddrinfo("localhost", service.c_str(), &hints, &res);
   if (errcode != 0) {
-    std::cerr << "getaddrinfo(): " << gai_strerror(errcode) << std::endl;
+    LOG(ERROR) << "getaddrinfo(): " << gai_strerror(errcode) << std::endl;
     exit(1);
   }
 
@@ -85,7 +84,7 @@ void Server::run() {
   initSocket();
   setSignal();
 
-  std::cout << "Server is running on " << port_ << "...\n";
+  LOG(INFO) << "Server is running on " << port_ << "...\n";
   char hbuf[NI_MAXHOST], sbuf[NI_MAXSERV];
   struct sockaddr_storage from;
   socklen_t len;
@@ -102,13 +101,13 @@ void Server::run() {
                   hbuf, sizeof(hbuf),
                   sbuf, sizeof(sbuf),
                   NI_NUMERICHOST | NI_NUMERICSERV);
-      std::cerr << "Accept: " << hbuf << ":" << sbuf << "\n";
+      LOG(INFO) << "Accept: " << hbuf << ":" << sbuf << "\n";
       Request request = recvRequest(acc);
       sendResponse(acc, request);
       close(acc);
     }
   }
-  std::cout << "Server is terminated ..." << std::endl;
+  LOG(INFO) << "Server is terminated ..." << std::endl;
 }
 
 Server::~Server() {
