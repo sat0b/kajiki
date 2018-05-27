@@ -1,8 +1,9 @@
 #ifndef KAJIKI_SERVER_H
 #define KAJIKI_SERVER_H
 
-#include <string>
+#include <functional>
 #include <map>
+#include <string>
 #include <vector>
 
 class Request {
