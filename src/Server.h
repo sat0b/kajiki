@@ -16,6 +16,14 @@ private:
     std::map<std::string, std::string> headers_;
 };
 
+class HTTPResponse {
+public:
+    explicit HTTPResponse(std::string body);
+    std::string getString();
+private:
+    std::string response_;
+};
+
 class HTTPServer {
 public:
     explicit HTTPServer(std::string service);

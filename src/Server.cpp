@@ -83,7 +83,6 @@ void HTTPServer::run() {
             std::cerr << "Accept: " << hbuf << ":" << sbuf << "\n";
             std::string request = recvRequest(acc);
             HTTPRequest http_request(request);
-            std::cout << request << std::endl;
             sendResponse(acc, request);
             close(acc);
             acc = 0;
@@ -115,21 +114,13 @@ std::string HTTPServer::recvRequest(int acc) {
 
 void HTTPServer::sendResponse(int acc, std::string request) {
     std::string body = "<!DOCTYPE html><html><head><title>Test</title></head><body>Hello World</body></html>";
-    std::string response = makeHttpMessage(body);
-    std::cout << "response: " << response;
-    ssize_t len = send(acc, response.c_str(), (size_t)response.length(), 0);
+    HTTPResponse response(body);
+    std::cout << "response: " << response.getString();
+    std::string res = response.getString();
+    ssize_t len = send(acc, res.c_str(), (size_t)res.length(), 0);
     if (len == -1) {
         perror("send");
     }
-}
-
-std::string makeHttpMessage(std::string body) {
-    std::stringstream message;
-    message << "HTTP/1.0 200 OK\r\n"
-            << "Content-Length: " << body.length() << "\r\n"
-            << "Content-type: text/html\r\n\r\n"
-            << body;
-    return message.str();
 }
 
 HTTPRequest::HTTPRequest(std::string request) : request_(request) {
@@ -151,6 +142,19 @@ void HTTPRequest::parseRequest() {
         }
         headers_[key] = value;
     }
+}
+
+HTTPResponse::HTTPResponse(std::string body) {
+    std::stringstream header;
+    header << "HTTP/1.0 200 OK\r\n"
+            << "Content-Length: " << body.length() << "\r\n"
+            << "Content-type: text/html\r\n\r\n"
+            << body;
+    response_ = header.str();
+}
+
+std::string HTTPResponse::getString() {
+    return response_;
 }
 
 int main() {
