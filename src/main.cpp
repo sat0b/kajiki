@@ -5,6 +5,7 @@
 #include "WikiXmlParser.h"
 #include "Server.h"
 #include <iostream>
+#include <string>
 
 class App {
   public:
@@ -23,8 +24,20 @@ class App {
     }
 
     void search() {
+        searcher_.loadIndex();
         server_.addHandler("/", [=](Request request) {
-            std::string body = R"({"Result": [{"name": "test1"},{"name": "test2"}]})";
+            std::map<std::string, std::string> params = request.getParams();
+            std::string query = params["query"];
+            std::cout << "query: " << query << std::endl;
+            std::vector<int> idList = searcher_.search(query);
+            std::string body = "{\"Result\": {\"documentId\":[";
+            for (int i = 0; i < idList.size(); i++) {
+                int id = idList[i];
+                body += std::to_string(id);
+                if (i != idList.size() -1)
+                    body += ",";
+            }
+            body += "]}}";
             return Response(body);
         });
         server_.run();
@@ -51,6 +64,8 @@ int main(int argc, char **argv) {
         std::string option = argv[1];
         if (option == "-f")
             app.saveIndex(argv[2]);
+        else if (option == "-s")
+            app.search();
     } else {
         app.usage();
         exit(1);

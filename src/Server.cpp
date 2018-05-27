@@ -132,6 +132,9 @@ Request::Request(std::string request) : request_(request) {
 
 void Request::parseRequest() {
     std::istringstream iss(request_);
+    iss >> method_;
+    iss >> uri_;
+    iss >> version_;
     std::string line;
     while (getline(iss, line)) {
         std::istringstream isline(line);
@@ -144,6 +147,24 @@ void Request::parseRequest() {
             }
         }
         headers_[key] = value;
+    }
+    parseURI();
+}
+
+std::map<std::string, std::string> Request::getParams() {
+    return params_;
+}
+
+void Request::parseURI() {
+    std::stringstream ss(uri_);
+    getline(ss, pattern_, '?');
+    std::string param;
+    while(getline(ss, param, '&')) {
+        std::stringstream paramss(param);
+        std::string key, value;
+        getline(paramss, key, '=');
+        getline(paramss, value, '=');
+        params_[key] = value;
     }
 }
 

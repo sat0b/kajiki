@@ -11,10 +11,17 @@ public:
     std::string getHeader(const std::string &header) {
         return headers_[header];
     }
+    std::map<std::string, std::string> getParams();
 private:
     std::string request_;
-    void parseRequest();
+    std::string method_;
+    std::string uri_;
+    std::string version_;
+    std::string pattern_;
     std::map<std::string, std::string> headers_;
+    std::map<std::string, std::string> params_;
+    void parseRequest();
+    void parseURI();
 };
 
 class Response {
