@@ -14,7 +14,6 @@ Server::Server(int port) : port_(port) {
   setSignal();
 }
 
-
 void Server::initSocket() {
   std::string service = std::to_string(port_);
 
