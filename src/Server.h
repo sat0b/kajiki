@@ -4,9 +4,9 @@
 #include <string>
 #include <map>
 
-class HTTPRequest {
+class Request {
 public:
-    explicit HTTPRequest(std::string request);
+    explicit Request(std::string request);
     std::string getHeader(const std::string &header) {
         return headers_[header];
     }
@@ -16,18 +16,18 @@ private:
     std::map<std::string, std::string> headers_;
 };
 
-class HTTPResponse {
+class Response {
 public:
-    explicit HTTPResponse(std::string body);
+    explicit Response(std::string body);
     std::string getString();
 private:
     std::string response_;
 };
 
-class HTTPServer {
+class Server {
 public:
-    explicit HTTPServer(std::string service);
-    ~HTTPServer();
+    explicit Server(std::string service);
+    ~Server();
     void run();
 
 private:

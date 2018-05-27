@@ -8,7 +8,7 @@
 #include <sstream>
 
 
-HTTPServer::HTTPServer(std::string service) {
+Server::Server(std::string service) {
     // TODO: Error handling
     port_ = stoi(service);
 
@@ -62,7 +62,7 @@ HTTPServer::HTTPServer(std::string service) {
     freeaddrinfo(res);
 }
 
-void HTTPServer::run() {
+void Server::run() {
     std::cout << "Server is running on " << port_ << "...\n";
     char hbuf[NI_MAXHOST], sbuf[NI_MAXSERV];
     struct sockaddr_storage from;
@@ -81,20 +81,20 @@ void HTTPServer::run() {
                         sbuf, sizeof(sbuf),
                         NI_NUMERICHOST|NI_NUMERICSERV);
             std::cerr << "Accept: " << hbuf << ":" << sbuf << "\n";
-            std::string request = recvRequest(acc);
-            HTTPRequest http_request(request);
-            sendResponse(acc, request);
+            std::string req = recvRequest(acc);
+            Request request(req);
+            sendResponse(acc, req);
             close(acc);
             acc = 0;
         }
     }
 }
 
-HTTPServer::~HTTPServer() {
+Server::~Server() {
     close(soc_);
 }
 
-std::string HTTPServer::recvRequest(int acc) {
+std::string Server::recvRequest(int acc) {
     std::string request;
     char buf[512], *ptr;
     ssize_t len;
@@ -112,9 +112,9 @@ std::string HTTPServer::recvRequest(int acc) {
     return request;
 }
 
-void HTTPServer::sendResponse(int acc, std::string request) {
+void Server::sendResponse(int acc, std::string request) {
     std::string body = "<!DOCTYPE html><html><head><title>Test</title></head><body>Hello World</body></html>";
-    HTTPResponse response(body);
+    Response response(body);
     std::cout << "response: " << response.getString();
     std::string res = response.getString();
     ssize_t len = send(acc, res.c_str(), (size_t)res.length(), 0);
@@ -123,11 +123,11 @@ void HTTPServer::sendResponse(int acc, std::string request) {
     }
 }
 
-HTTPRequest::HTTPRequest(std::string request) : request_(request) {
+Request::Request(std::string request) : request_(request) {
     parseRequest();
 }
 
-void HTTPRequest::parseRequest() {
+void Request::parseRequest() {
     std::istringstream iss(request_);
     std::string line;
     while (getline(iss, line)) {
@@ -144,7 +144,7 @@ void HTTPRequest::parseRequest() {
     }
 }
 
-HTTPResponse::HTTPResponse(std::string body) {
+Response::Response(std::string body) {
     std::stringstream header;
     header << "HTTP/1.0 200 OK\r\n"
             << "Content-Length: " << body.length() << "\r\n"
@@ -153,11 +153,11 @@ HTTPResponse::HTTPResponse(std::string body) {
     response_ = header.str();
 }
 
-std::string HTTPResponse::getString() {
+std::string Response::getString() {
     return response_;
 }
 
 int main() {
-    HTTPServer server("8080");
+    Server server("8080");
     server.run();
 }
