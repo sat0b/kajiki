@@ -81,9 +81,9 @@ void Server::run() {
                         sbuf, sizeof(sbuf),
                         NI_NUMERICHOST|NI_NUMERICSERV);
             std::cerr << "Accept: " << hbuf << ":" << sbuf << "\n";
-            std::string req = recvRequest(acc);
-            Request request(req);
-            sendResponse(acc, req);
+            Request request = recvRequest(acc);
+            Response response = makeResponse(request);
+            sendResponse(acc, response);
             close(acc);
             acc = 0;
         }
@@ -94,8 +94,8 @@ Server::~Server() {
     close(soc_);
 }
 
-std::string Server::recvRequest(int acc) {
-    std::string request;
+Request Server::recvRequest(int acc) {
+    std::string req;
     char buf[512], *ptr;
     ssize_t len;
     for (;;) {
@@ -105,19 +105,22 @@ std::string Server::recvRequest(int acc) {
             break;
         }
         buf[len] = '\0';
-        request += buf;
+        req += buf;
         if (len < sizeof(buf))
             break;
     }
-    return request;
+    return Request(req);
 }
 
-void Server::sendResponse(int acc, std::string request) {
+Response Server::makeResponse(Request request) {
     std::string body = "<!DOCTYPE html><html><head><title>Test</title></head><body>Hello World</body></html>";
-    Response response(body);
-    std::cout << "response: " << response.getString();
+    return Response(body);
+}
+
+void Server::sendResponse(int acc, Response response) {
     std::string res = response.getString();
     ssize_t len = send(acc, res.c_str(), (size_t)res.length(), 0);
+    std::cout << "response: " << response.getString();
     if (len == -1) {
         perror("send");
     }

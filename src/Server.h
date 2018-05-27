@@ -33,8 +33,9 @@ public:
 private:
     int soc_;
     int port_;
-    std::string recvRequest(int acc);
-    void sendResponse(int acc, std::string response);
+    Request recvRequest(int acc);
+    Response makeResponse(Request request);
+    void sendResponse(int acc, Response response);
 };
 
 std::string makeHttpMessage(std::string body);
