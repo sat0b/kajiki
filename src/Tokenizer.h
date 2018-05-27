@@ -6,14 +6,14 @@
 
 class Tokenizer {
 public:
-    explicit Tokenizer(std::string text);
-    std::vector<std::string> getBigram();
+  explicit Tokenizer(std::string text);
+  std::vector<std::string> getBigram();
 
 private:
-    std::string nextUtf8Char();
-    std::string readUtf8Char();
-    size_t p;
-    std::string text;
+  std::string nextUtf8Char();
+  std::string readUtf8Char();
+  size_t p;
+  std::string text;
 };
 
 

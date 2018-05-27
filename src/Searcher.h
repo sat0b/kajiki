@@ -6,13 +6,13 @@
 
 class Searcher {
 public:
-    Searcher() = default;
-    explicit Searcher(std::map<std::string, std::vector<int>> postingList);
-    void loadIndex();
-    std::vector<int> search(std::string query);
+  Searcher() = default;
+  explicit Searcher(std::map<std::string, std::vector<int>> postingList);
+  void loadIndex();
+  std::vector<int> search(std::string query);
 
 private:
-    std::map<std::string, std::vector<int>> postingList_;
+  std::map<std::string, std::vector<int>> postingList_;
 };
 
 
