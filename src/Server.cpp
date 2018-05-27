@@ -1,4 +1,5 @@
 #include "Server.h"
+#include <cstring>
 #include <sys/socket.h>
 
 #include <netdb.h>
