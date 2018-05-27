@@ -28,6 +28,7 @@ TEST(searcherTest, searcherInitializedByStorageIndex) {
 
   // search
   Searcher searcher;
+  searcher.loadIndex();
   ASSERT_THAT(searcher.search("ab"), ElementsAre(1, 2));
   ASSERT_THAT(searcher.search("cd"), ElementsAre(2, 3));
 }
