@@ -3,6 +3,7 @@
 #include "Searcher.h"
 #include "WikiXmlParser.h"
 #include "Server.h"
+#include "Dictionary.h"
 #include <iostream>
 #include <glog/logging.h>
 
@@ -30,7 +31,20 @@ public:
   }
 
   void addField(std::string key, Json json) {
-    json_ += "\"" + key + "\":" + json.getString() + ",";
+    json_ += quote(key) + ":" + json.getString() + ",";
+  }
+
+  void addField(std::string key, std::vector<Document> documents) {
+    json_ += quote(key) + ":[";
+    for (Document document : documents) {
+      json_ += "{";
+      json_ += quote("Title") + ": " + quote(document.title) + ",";
+      json_ += quote("Text") + ": " + quote(document.text) + ",";
+      json_ += quote("Id") + ": " + std::to_string(document.id);
+      json_ += "},";
+    }
+    json_ = json_.substr(0, json_.length() - 1);
+    json_ += "],";
   }
 
   std::string getString() {
@@ -47,7 +61,7 @@ private:
 
 class App {
 public:
-  App() : server_(8080) {}
+  App() : server_(8080), dictionary_("/tmp/kajiki.dict") {}
 
   void saveIndex(std::string filename) {
     WikiXmlParser wikiXmlParser(filename, 10);
@@ -58,6 +72,7 @@ public:
         break;
       Indexer indexer(documents);
       indexer.outputStorage();
+      dictionary_.putAll(documents);
     }
   }
 
@@ -68,12 +83,12 @@ public:
       std::string query = params["query"];
       LOG(INFO) << "query: " << query << std::endl;
       std::vector<int> idList = searcher_.search(query);
+      std::vector<Document> documents = dictionary_.readAll(idList);
       int nHit = static_cast<int>(idList.size());
-      Json json, docJson;
-      docJson.addField("documentId", idList);
+      Json json;
       json.addField("Hit", nHit);
       json.addField("Query", query);
-      json.addField("Result", docJson);
+      json.addField("Result", documents);
       Response response;
       response.setContentType("application/json");
       response.setBody(json.getString());
@@ -93,7 +108,12 @@ public:
 private:
   Searcher searcher_;
   Server server_;
+  Dictionary dictionary_;
 };
+
+// command line argument
+DEFINE_bool(server, false, "server mode");
+DEFINE_string(feedfile, "", "feed file");
 
 int main(int argc, char **argv) {
   // Initialize Google's logging library.
@@ -102,16 +122,9 @@ int main(int argc, char **argv) {
   google::ParseCommandLineFlags(&argc, &argv, true);
 
   App app;
-  if (argc == 1) {
+  if (FLAGS_server || FLAGS_feedfile.length() == 0) {
     app.search();
-  } else if (argc > 1) {
-    std::string option = argv[1];
-    if (option == "-f")
-      app.saveIndex(argv[2]);
-    else if (option == "-s")
-      app.search();
   } else {
-    app.usage();
-    exit(1);
+    app.saveIndex(FLAGS_feedfile);
   }
 }
