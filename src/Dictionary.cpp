@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <fstream>
 #include <glog/logging.h>
 #include <iostream>
@@ -39,8 +40,8 @@ void Dictionary::putAll(std::vector<Document> documents) {
   }
   for (Document document : documents) {
     ofs << document.id << "\t"
-        << document.title << "\t"
-        << document.text << "\n";
+      << document.title << "\t"
+      << document.text << "\n";
   }
   ofs.close();
 }
