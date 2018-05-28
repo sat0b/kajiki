@@ -11,6 +11,7 @@ public:
   ~Dictionary();
   std::vector<Document> readAll(std::vector<int> documentIds);
   void putAll(std::vector<Document> documents);
+
 private:
   std::string path_;
   std::map<int, Document> dict_;

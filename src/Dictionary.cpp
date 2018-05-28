@@ -24,7 +24,6 @@ std::vector<Document> Dictionary::readAll(std::vector<int> documentIds) {
       std::string title;
       std::string text;
       ssline >> title >> text;
-      std::cout << "id: " << id << "title: " << title << "text: " << text;
       documents.emplace_back(id, title, text);
     }
   }
