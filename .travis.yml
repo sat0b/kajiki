@@ -29,6 +29,7 @@ install:
   - export LIBRARY_PATH=$LIBRARY_PATH:$PWD
   - cd -
   - sudo apt-get install libgflags-dev libgoogle-glog-dev
+  - sudo ldconfig
 
 after_success:
     # Creating report
