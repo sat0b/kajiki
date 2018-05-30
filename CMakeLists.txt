@@ -3,7 +3,8 @@ project(kajiki)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_VERBOSE_MAKEFILE TRUE)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O0 -lglog -lgflags -coverage")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -Wall -O0 -lglog -lgflags -coverage")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 add_subdirectory(src)
 add_subdirectory(test)

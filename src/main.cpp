@@ -119,6 +119,7 @@ int main(int argc, char **argv) {
   // Initialize Google's logging library.
   google::InitGoogleLogging(argv[0]);
   google::InstallFailureSignalHandler();
+  gflags::SetUsageMessage("A toy search-engine for wikidata");
   google::ParseCommandLineFlags(&argc, &argv, true);
 
   App app;
