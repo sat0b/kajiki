@@ -1,9 +1,9 @@
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <glog/logging.h>
 #include "Indexer.h"
 #include "Tokenizer.h"
+#include <fstream>
+#include <glog/logging.h>
+#include <iostream>
+#include <sstream>
 
 const std::string Indexer::filename = "/tmp/kajiki.index";
 

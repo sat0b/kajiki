@@ -1,9 +1,9 @@
+#include "Dictionary.h"
+#include "Document.h"
 #include <algorithm>
 #include <fstream>
 #include <glog/logging.h>
 #include <iostream>
-#include "Document.h"
-#include "Dictionary.h"
 
 Dictionary::Dictionary(std::string path) : path_(path) {}
 
@@ -39,9 +39,8 @@ void Dictionary::putAll(std::vector<Document> documents) {
     exit(1);
   }
   for (Document document : documents) {
-    ofs << document.id << "\t"
-      << document.title << "\t"
-      << document.text << "\n";
+    ofs << document.id << "\t" << document.title << "\t" << document.text
+        << "\n";
   }
   ofs.close();
 }

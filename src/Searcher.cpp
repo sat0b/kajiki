@@ -1,11 +1,11 @@
-#include <iostream>
-#include <algorithm>
 #include "Searcher.h"
-#include "Tokenizer.h"
 #include "Indexer.h"
+#include "Tokenizer.h"
+#include <algorithm>
+#include <iostream>
 
-Searcher::Searcher(std::map<std::string, std::vector<int>> postingList) :
-  postingList_(std::move(postingList)) {}
+Searcher::Searcher(std::map<std::string, std::vector<int>> postingList)
+    : postingList_(std::move(postingList)) {}
 
 void Searcher::loadIndex() {
   Indexer indexer;

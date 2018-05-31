@@ -1,9 +1,9 @@
 #ifndef KAJIKI_DICTIONARY_H
 #define KAJIKI_DICTIONARY_H
 
-#include <vector>
-#include <map>
 #include "Document.h"
+#include <map>
+#include <vector>
 
 class Dictionary {
 public:
@@ -17,4 +17,4 @@ private:
   std::map<int, Document> dict_;
 };
 
-#endif //KAJIKI_DICTIONARY_H
+#endif // KAJIKI_DICTIONARY_H

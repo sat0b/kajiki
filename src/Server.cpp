@@ -1,12 +1,12 @@
 #include "Server.h"
 #include <cstring>
-#include <sys/socket.h>
-#include <netdb.h>
-#include <unistd.h>
-#include <signal.h>
-#include <iostream>
-#include <sstream>
 #include <glog/logging.h>
+#include <iostream>
+#include <netdb.h>
+#include <signal.h>
+#include <sstream>
+#include <sys/socket.h>
+#include <unistd.h>
 
 Server::Server(int port) : port_(port) {}
 
@@ -90,17 +90,15 @@ void Server::run() {
   socklen_t len;
   int acc;
   while (!killed) {
-    len = (socklen_t) sizeof(from);
-    acc = accept(soc_, (struct sockaddr *) &from, &len);
+    len = (socklen_t)sizeof(from);
+    acc = accept(soc_, (struct sockaddr *)&from, &len);
     if (acc == -1) {
       if (errno != EINTR) {
         perror("accept");
       }
     } else {
-      getnameinfo((struct sockaddr *) &from, len,
-                  hbuf, sizeof(hbuf),
-                  sbuf, sizeof(sbuf),
-                  NI_NUMERICHOST | NI_NUMERICSERV);
+      getnameinfo((struct sockaddr *)&from, len, hbuf, sizeof(hbuf), sbuf,
+                  sizeof(sbuf), NI_NUMERICHOST | NI_NUMERICSERV);
       LOG(INFO) << "Accept: " << hbuf << ":" << sbuf << "\n";
       Request request = recvRequest(acc);
       sendResponse(acc, request);
@@ -137,19 +135,22 @@ void Server::sendResponse(int acc, Request request) {
     std::string pattern = handler.first;
     std::function<Response(Request)> func = handler.second;
     Response response;
+    LOG(INFO) << "request pattern: " << request.getPattern() << "\n";
+    LOG(INFO) << "pattern: " << pattern << "\n";
     if (request.getPattern() == pattern)
       response = func(request);
     else
       response.setNotFound();
     std::string res = response.getString();
-    ssize_t len = send(acc, res.c_str(), (size_t) res.length(), 0);
+    ssize_t len = send(acc, res.c_str(), (size_t)res.length(), 0);
     if (len == -1) {
       perror("send");
     }
   }
 }
 
-void Server::addHandler(std::string pattern, std::function<Response(Request)> handler) {
+void Server::addHandler(std::string pattern,
+                        std::function<Response(Request)> handler) {
   handlers_[pattern] = handler;
 }
 

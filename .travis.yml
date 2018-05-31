@@ -12,6 +12,7 @@ addons:
       - cmake
       - cmake-data
       - lcov
+      - libgoogle-glog-dev
 
 compiler:
   - clang
@@ -28,7 +29,12 @@ install:
   - export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:$PWD/include
   - export LIBRARY_PATH=$LIBRARY_PATH:$PWD
   - cd -
-  - sudo apt-get install libgflags-dev libgoogle-glog-dev
+  - git clone https://github.com/gflags/gflags.git
+  - cd gflags
+  - cmake . && cmake --build .
+  - export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:$PWD/include
+  - export LIBRARY_PATH=$LIBRARY_PATH:$PWD/lib
+  - cd -
 
 after_success:
     # Creating report

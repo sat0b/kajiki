@@ -1,9 +1,9 @@
 #ifndef KAJIKI_INDEXER_H
 #define KAJIKI_INDEXER_H
 
-#include <vector>
-#include <map>
 #include "Document.h"
+#include <map>
+#include <vector>
 
 class Indexer {
 public:
@@ -20,4 +20,4 @@ private:
   void makePostingList();
 };
 
-#endif //KAJIKI_INDEXER_H
+#endif // KAJIKI_INDEXER_H

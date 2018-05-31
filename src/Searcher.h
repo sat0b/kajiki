@@ -15,5 +15,4 @@ private:
   std::map<std::string, std::vector<int>> postingList_;
 };
 
-
-#endif //KAJIKI_SEARCHER_H
+#endif // KAJIKI_SEARCHER_H

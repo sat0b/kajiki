@@ -1,11 +1,11 @@
+#include "Dictionary.h"
 #include "Document.h"
 #include "Indexer.h"
 #include "Searcher.h"
-#include "WikiXmlParser.h"
 #include "Server.h"
-#include "Dictionary.h"
-#include <iostream>
+#include "WikiXmlParser.h"
 #include <glog/logging.h>
+#include <iostream>
 
 class Json {
 public:
@@ -62,7 +62,8 @@ private:
 class WebApp {
 public:
   Response getResponse(Request request) {
-    std::string body = "<html><head><title>kajiki</title></head><body>Kajiki</body></html>";
+    std::string body = "<html><head><title>kajiki</title></"
+                       "head><body>Kajiki</body></html>";
     Response response;
     response.setContentType("text/html");
     response.setBody(body);
@@ -88,9 +89,17 @@ public:
   }
 
   void serve() {
-    registerTopPage();
     registerSearch();
+    registerTopPage();
     server_.run();
+  }
+
+  void usage() {
+    std::cout << "Usage: kajiki:\n";
+    std::cout << "  -f string\n";
+    std::cout << "      file_name (xml)\n";
+    std::cout << "  -s\n";
+    std::cout << "      server mode\n";
   }
 
 private:
@@ -124,25 +133,23 @@ private:
       Response response = webapp.getResponse(request);
       return response;
     });
-    server_.run();
   }
 };
-
-// command line argument
-DEFINE_bool(server, false, "server mode");
-DEFINE_string(feedfile, "", "feed file");
 
 int main(int argc, char **argv) {
   // Initialize Google's logging library.
   google::InitGoogleLogging(argv[0]);
   google::InstallFailureSignalHandler();
-  gflags::SetUsageMessage("A toy search-engine for wikidata");
-  google::ParseCommandLineFlags(&argc, &argv, true);
 
   App app;
-  if (FLAGS_server || FLAGS_feedfile.length() == 0) {
-    app.serve();
+  if (argc > 1) {
+    std::string option = argv[1];
+    if (option == "-f")
+      app.saveIndex(argv[2]);
+    else if (option == "-s")
+      app.serve();
   } else {
-    app.saveIndex(FLAGS_feedfile);
+    app.usage();
+    exit(1);
   }
 }
