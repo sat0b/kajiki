@@ -59,6 +59,17 @@ private:
   }
 };
 
+class WebApp {
+public:
+  Response getResponse(Request request) {
+    std::string body = "<html><head><title>kajiki</title></head><body>Kajiki</body></html>";
+    Response response;
+    response.setContentType("text/html");
+    response.setBody(body);
+    return response;
+  }
+};
+
 class App {
 public:
   App() : server_(8080), dictionary_("/tmp/kajiki.dict") {}
@@ -76,7 +87,18 @@ public:
     }
   }
 
-  void search() {
+  void serve() {
+    registerTopPage();
+    registerSearch();
+    server_.run();
+  }
+
+private:
+  Searcher searcher_;
+  Server server_;
+  Dictionary dictionary_;
+
+  void registerSearch() {
     searcher_.loadIndex();
     server_.addHandler("/search", [=](Request request) {
       std::map<std::string, std::string> params = request.getParams();
@@ -94,21 +116,16 @@ public:
       response.setBody(json.getString());
       return response;
     });
+  }
+
+  void registerTopPage() {
+    server_.addHandler("/", [=](Request request) {
+      WebApp webapp;
+      Response response = webapp.getResponse(request);
+      return response;
+    });
     server_.run();
   }
-
-  void usage() {
-    std::cout << "Usage: kajiki:\n";
-    std::cout << "  -f string\n";
-    std::cout << "      file_name (xml)\n";
-    std::cout << "  -s\n";
-    std::cout << "      server mode\n";
-  }
-
-private:
-  Searcher searcher_;
-  Server server_;
-  Dictionary dictionary_;
 };
 
 // command line argument
@@ -124,7 +141,7 @@ int main(int argc, char **argv) {
 
   App app;
   if (FLAGS_server || FLAGS_feedfile.length() == 0) {
-    app.search();
+    app.serve();
   } else {
     app.saveIndex(FLAGS_feedfile);
   }
