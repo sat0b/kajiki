@@ -51,7 +51,7 @@ public:
   explicit Server(int port);
   ~Server();
   void run();
-  void addHandler(std::string pattern, std::function<Response(Request)> func);
+  void addHandler(std::string pattern, std::function<Response(Request)> handler);
 
 private:
   int soc_;

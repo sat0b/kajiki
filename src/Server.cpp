@@ -149,8 +149,8 @@ void Server::sendResponse(int acc, Request request) {
   }
 }
 
-void Server::addHandler(std::string pattern, std::function<Response(Request)> func) {
-  handlers_[pattern] = func;
+void Server::addHandler(std::string pattern, std::function<Response(Request)> handler) {
+  handlers_[pattern] = handler;
 }
 
 Request::Request(std::string request) : request_(request) {
