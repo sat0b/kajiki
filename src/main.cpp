@@ -59,7 +59,7 @@ private:
   }
 };
 
-class HTML {
+class Html {
 public:
   void addTitle(std::string title) {
     title_ = title;
@@ -93,7 +93,7 @@ private:
 class WebApp {
 public:
   Response getResponse(Request request) {
-    HTML html;
+    Html html;
     html.addTitle("kajiki");
     html.addBody("Kajiki");
     Response response;
