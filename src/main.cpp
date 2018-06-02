@@ -59,14 +59,46 @@ private:
   }
 };
 
+class HTML {
+public:
+  void addTitle(std::string title) {
+    title_ = title;
+  }
+
+  void addBody(std::string body) {
+    body_ = body;
+  }
+
+  std::string getString() {
+    std::string html;
+    html = "<html>";
+    html += "<head>";
+    if (title_.length() > 0) {
+      html += "<title>";
+      html += title_;
+      html += "</title>";
+    }
+    html += "<body>";
+    html += body_;
+    html += "</body>";
+    html += "</html>";
+    return html;
+  }
+
+private:
+  std::string title_;
+  std::string body_;
+};
+
 class WebApp {
 public:
   Response getResponse(Request request) {
-    std::string body =
-        "<html><head><title>kajiki</title></head><body>Kajiki</body></html>";
+    HTML html;
+    html.addTitle("kajiki");
+    html.addBody("Kajiki");
     Response response;
     response.setContentType("text/html");
-    response.setBody(body);
+    response.setBody(html.getString());
     return response;
   }
 };
