@@ -9,7 +9,7 @@ add_executable(searcherTest
 add_executable(wikiXmlParserTest
         ${CMAKE_CURRENT_SOURCE_DIR}/WikiXmlParserTest.cpp)
 
-target_link_libraries(tokenizerTest libkajiki glog gmock gtest_main pthread)
+target_link_libraries(tokenizerTest libkajiki glog gtest gmock gtest_main pthread)
 target_link_libraries(indexerTest libkajiki glog gtest gmock gtest_main pthread)
 target_link_libraries(searcherTest libkajiki glog gtest gmock gtest_main pthread)
 target_link_libraries(wikiXmlParserTest libkajiki glog gtest gmock gtest_main pthread)
