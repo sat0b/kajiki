@@ -62,8 +62,8 @@ private:
 class WebApp {
 public:
   Response getResponse(Request request) {
-    std::string body = "<html><head><title>kajiki</title></"
-                       "head><body>Kajiki</body></html>";
+    std::string body =
+        "<html><head><title>kajiki</title></head><body>Kajiki</body></html>";
     Response response;
     response.setContentType("text/html");
     response.setBody(body);
