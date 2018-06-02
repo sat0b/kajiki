@@ -19,6 +19,7 @@ public:
   }
 
   std::map<std::string, std::string> getParams();
+
 private:
   std::string request_;
   std::string method_;
@@ -35,6 +36,7 @@ class Response {
 public:
   Response() = default;
   std::string getString();
+  bool empty();
   void setContentType(std::string type);
   void setBody(std::string body);
   void setStatus(int statusCode);
@@ -51,7 +53,8 @@ public:
   explicit Server(int port);
   ~Server();
   void run();
-  void addHandler(std::string pattern, std::function<Response(Request)> handler);
+  void addHandler(std::string pattern,
+                  std::function<Response(Request)> handler);
 
 private:
   int soc_;
@@ -65,4 +68,4 @@ private:
   static void setKilled(int sig);
 };
 
-#endif //KAJIKI_SERVER_H
+#endif // KAJIKI_SERVER_H

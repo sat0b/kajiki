@@ -131,21 +131,19 @@ Request Server::recvRequest(int acc) {
 }
 
 void Server::sendResponse(int acc, Request request) {
+  Response response;
   for (auto handler : handlers_) {
     std::string pattern = handler.first;
     std::function<Response(Request)> func = handler.second;
-    Response response;
-    LOG(INFO) << "request pattern: " << request.getPattern() << "\n";
-    LOG(INFO) << "pattern: " << pattern << "\n";
     if (request.getPattern() == pattern)
       response = func(request);
-    else
-      response.setNotFound();
-    std::string res = response.getString();
-    ssize_t len = send(acc, res.c_str(), (size_t)res.length(), 0);
-    if (len == -1) {
-      perror("send");
-    }
+  }
+  if (response.empty())
+    response.setNotFound();
+  std::string res = response.getString();
+  ssize_t len = send(acc, res.c_str(), (size_t)res.length(), 0);
+  if (len == -1) {
+    perror("send");
   }
 }
 
@@ -227,4 +225,8 @@ std::string Response::getString() {
   res << "\r\n";
   res << body_ << "\n";
   return res.str();
+}
+
+bool Response::empty() {
+  return body_.length() == 0;
 }

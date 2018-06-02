@@ -115,6 +115,7 @@ private:
       LOG(INFO) << "query: " << query << std::endl;
       std::vector<int> idList = searcher_.search(query);
       std::vector<Document> documents = dictionary_.readAll(idList);
+      LOG(INFO) << "document size: " << documents.size() << std::endl;
       int nHit = static_cast<int>(idList.size());
       Json json;
       json.addField("Hit", nHit);
@@ -123,6 +124,7 @@ private:
       Response response;
       response.setContentType("application/json");
       response.setBody(json.getString());
+      LOG(INFO) << response.getString() << std::endl;
       return response;
     });
   }
