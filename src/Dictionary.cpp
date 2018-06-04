@@ -28,7 +28,6 @@ std::vector<Document> Dictionary::readAll(std::vector<int> documentIds) {
       documents.emplace_back(id, title, text);
     }
   }
-  ifs.close();
   return documents;
 }
 
@@ -42,5 +41,4 @@ void Dictionary::putAll(std::vector<Document> documents) {
     ofs << document.id << "\t" << document.title << "\t" << document.text
         << "\n";
   }
-  ofs.close();
 }

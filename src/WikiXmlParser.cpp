@@ -1,10 +1,10 @@
-#include <iostream>
 #include "WikiXmlParser.h"
-#include <unistd.h>
 #include <glog/logging.h>
+#include <iostream>
+#include <unistd.h>
 
-WikiXmlParser::WikiXmlParser(std::string xmlName, int nDocument) :
-  xmlStream_(xmlName), nDocument_(nDocument) {
+WikiXmlParser::WikiXmlParser(std::string xmlName, int nDocument)
+    : xmlStream_(xmlName), nDocument_(nDocument) {
   if (xmlStream_.fail()) {
     LOG(ERROR) << "Can't open file " << xmlName << std::endl;
     std::exit(1);
@@ -91,4 +91,6 @@ char WikiXmlParser::next() {
   return c;
 }
 
-void WikiXmlParser::back(int n) { xmlStream_.seekg(-n, std::ios_base::cur); }
+void WikiXmlParser::back(int n) {
+  xmlStream_.seekg(-n, std::ios_base::cur);
+}

@@ -38,7 +38,6 @@ void Indexer::outputStorage() {
       ofs << documentID << "\t";
     ofs << std::endl;
   }
-  ofs.close();
 }
 
 void Indexer::readStorage() {
@@ -59,5 +58,4 @@ void Indexer::readStorage() {
       postingList_[index].push_back(documentId);
     }
   }
-  ifs.close();
 }
