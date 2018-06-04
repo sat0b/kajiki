@@ -7,12 +7,12 @@
 
 const std::string Indexer::filename = "/tmp/kajiki.index";
 
-Indexer::Indexer(std::vector<Document> documents) : documents(documents) {
+Indexer::Indexer(std::vector<Document> documents) : documents_(documents) {
   makePostingList();
 }
 
 void Indexer::makePostingList() {
-  for (Document document : documents) {
+  for (Document document : documents_) {
     Tokenizer tokenizer(document.title);
     std::vector<std::string> bigrams = tokenizer.getBigram();
     for (std::string index : bigrams) {

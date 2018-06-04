@@ -15,7 +15,7 @@ public:
 
 private:
   const static std::string filename;
-  std::vector<Document> documents;
+  std::vector<Document> documents_;
   std::map<std::string, std::vector<int>> postingList_;
   void makePostingList();
 };
